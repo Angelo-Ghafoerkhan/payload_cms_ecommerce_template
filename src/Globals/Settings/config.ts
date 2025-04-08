@@ -231,6 +231,23 @@ export const Settings: GlobalConfig = {
             },
           ],
         },
+        {
+          label: 'Maintenance',
+          fields: [
+            {
+              name: 'enableMaintenanceMode',
+              type: 'checkbox',
+            },
+            {
+              name: 'maintenancePassword',
+              type: 'text',
+              required: true,
+              admin: {
+                condition: (data, siblingData) => siblingData.enableMaintenanceMode,
+              },
+            },
+          ],
+        },
       ],
     },
   ],

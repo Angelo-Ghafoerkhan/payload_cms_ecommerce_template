@@ -2790,6 +2790,8 @@ export interface Setting {
    */
   allowAccountCreation?: boolean | null;
   cartStyle?: ('popup' | 'page') | null;
+  enableMaintenanceMode?: boolean | null;
+  maintenancePassword?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3022,6 +3024,8 @@ export interface SettingsSelect<T extends boolean = true> {
   enableEcommerce?: T;
   allowAccountCreation?: T;
   cartStyle?: T;
+  enableMaintenanceMode?: T;
+  maintenancePassword?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
