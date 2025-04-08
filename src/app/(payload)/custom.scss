@@ -1,0 +1,14 @@
+
+.nav-group .nav-group__label {
+  @apply font-semibold text-lg mt-6;
+}
+
+
+.nav-group__toggle {
+  @apply flex items-center;
+}
+
+
+.nav-group__indicator {
+  @apply mt-[10px];
+}

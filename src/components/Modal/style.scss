@@ -1,0 +1,19 @@
+/* style.scss */
+
+.modal-children {
+    position: relative;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+  }
+  
+  @media (max-width: 639px) {
+    .close-button {
+      display: block;
+    }
+  }
+  
