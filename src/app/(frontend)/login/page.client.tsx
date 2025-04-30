@@ -162,7 +162,6 @@ export default function Page() {
             id="emailToReset"
             register={register}
             errors={errors}
-            animatePlaceholder={false}
           />
           <div className="mt-8 flex">
             <Button text="Request Password Reset" type="submit" onClick={handleRequestPassword} />
@@ -184,7 +183,6 @@ export default function Page() {
                   id="name"
                   register={register}
                   errors={errors}
-                  animatePlaceholder={false}
                 />
               )}
               <Input
@@ -194,7 +192,6 @@ export default function Page() {
                 id="email"
                 register={register}
                 errors={errors}
-                animatePlaceholder={false}
               />
               {!isSignUp && (
                 <Input

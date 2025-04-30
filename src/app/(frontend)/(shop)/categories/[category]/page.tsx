@@ -33,10 +33,13 @@ async function fetchCategoryData(category: string | string[]) {
 }
 
 export async function generateMetadata(
-  { params }: { params: { category: string | string[] } },
+  { params }: { params: Promise<{ category: string | string[] }> },
   parent: ResolvingMetadata,
 ) {
-  const slugPath = Array.isArray(params.category) ? params.category.join('/') : `${params.category}`
+  const resolvedParams = await params
+  const slugPath = Array.isArray(resolvedParams.category)
+    ? resolvedParams.category.join('/')
+    : `${resolvedParams.category}`
   const page = await fetchCategoryData(slugPath)
 
   return {
@@ -46,9 +49,15 @@ export async function generateMetadata(
 }
 
 // Define the dynamic page component
-export default async function Page({ params }: { params: { category: string | string[] } }) {
-  params = await params
-  const slugPath = Array.isArray(params.category) ? params.category.join('/') : params.category
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ category: string | string[] }>
+}) {
+  const resolvedParams = await params
+  const slugPath = Array.isArray(resolvedParams.category)
+    ? resolvedParams.category.join('/')
+    : resolvedParams.category
   const page = await fetchCategoryData(slugPath)
 
   if (!page) {

@@ -100,7 +100,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, settings }) =>
   return (
     <header
       className={clsx(
-        'w-full z-20 pb-2 transition-transform duration-300',
+        'w-screen z-20 pb-2 transition-transform duration-300',
         hideHeader && data.settings?.header?.hideOnScrollDown
           ? '-translate-y-[120%]'
           : 'translate-y-0',

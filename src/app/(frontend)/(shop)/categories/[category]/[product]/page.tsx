@@ -40,11 +40,13 @@ async function fetchProductData(product: string | string[]) {
 }
 
 export async function generateMetadata(
-  { params }: { params: { product: string | string[] } },
+  { params }: { params: Promise<{ product: string | string[] }> },
   parent: ResolvingMetadata,
 ) {
-  params = await params
-  const slugPath = Array.isArray(params.product) ? params.product.join('/') : `${params.product}`
+  const resolvedParams = await params
+  const slugPath = Array.isArray(resolvedParams.product)
+    ? resolvedParams.product.join('/')
+    : `${resolvedParams.product}`
   const product = await fetchProductData(slugPath)
 
   const images = []
@@ -82,9 +84,15 @@ export async function generateMetadata(
 }
 
 // Define the dynamic page component
-export default async function Page({ params }: { params: { product: string | string[] } }) {
-  params = await params
-  const slugPath = Array.isArray(params.product) ? params.product.join('/') : params.product
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ product: string | string[] }>
+}) {
+  const resolvedParams = await params
+  const slugPath = Array.isArray(resolvedParams.product)
+    ? resolvedParams.product.join('/')
+    : `${resolvedParams.product}`
   const product = await fetchProductData(slugPath)
 
   if (!product) {

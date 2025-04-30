@@ -1,4 +1,4 @@
-import type { DefaultDocumentIDType, NavPreferences, Payload, User } from 'payload'
+import type { DefaultDocumentIDType, NavPreferences, Payload } from 'payload'
 
 import { cache } from 'react'
 
@@ -7,7 +7,7 @@ export const getNavPrefs = cache(
     payload: Payload,
     userID: DefaultDocumentIDType,
     userSlug: string,
-  ): Promise<NavPreferences> => {
+  ): Promise<NavPreferences | undefined> => {
     return userSlug
       ? await payload
           .find({
@@ -35,7 +35,7 @@ export const getNavPrefs = cache(
               ],
             },
           })
-          ?.then((res) => res?.docs?.[0]?.value)
-      : null
+          ?.then((res) => (res?.docs?.[0]?.value as NavPreferences) || null)
+      : undefined
   },
 )

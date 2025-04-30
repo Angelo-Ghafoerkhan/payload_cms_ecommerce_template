@@ -1,7 +1,7 @@
 'use client'
 import clsx from 'clsx'
-import React, { FC, Fragment, useState } from 'react'
-import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
+import React, { FC, Fragment, useEffect, useState } from 'react'
+import { FieldErrors, FieldValues, UseFormRegister, UseFormWatch } from 'react-hook-form'
 import { Eye, EyeOff } from 'lucide-react'
 
 import {
@@ -25,9 +25,10 @@ interface InputProps {
   errors: FieldErrors
   disabled?: boolean
   placeholder?: string
-  animatePlaceholder: boolean
+  animatePlaceholder?: boolean
   className?: string
   allowShowPassword?: boolean
+  watch?: UseFormWatch<FieldValues>
 }
 
 const Input: FC<InputProps> = ({
@@ -42,7 +43,10 @@ const Input: FC<InputProps> = ({
   animatePlaceholder,
   className = '',
   allowShowPassword,
+  watch,
 }) => {
+  const [hasValue, setHasValue] = useState(false)
+
   // Function to enforce numeric-only input when type is "number"
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (type === 'number') {
@@ -54,13 +58,21 @@ const Input: FC<InputProps> = ({
   const [hasFocus, setHasFocus] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
-  // Helper to determine if input/textarea has a value.
-  const hasValue = Boolean((register(id)?.ref as any)?.value)
+  const value = watch?.(id)
+
+  useEffect(() => {
+    if (value !== '') setHasValue(true)
+    else setHasValue(false)
+  }, [value])
 
   const topClass =
     type === 'textarea'
-      ? (hasFocus || hasValue ? '-top-7' : 'top-3')
-      : (hasFocus || hasValue ? '-top-7' : 'top-1/2 -translate-y-1/2')
+      ? hasFocus || hasValue
+        ? '-top-7'
+        : 'top-3'
+      : hasFocus || hasValue
+        ? '-top-7'
+        : 'top-1/2 -translate-y-1/2'
 
   if (animatePlaceholder) {
     return (
@@ -123,17 +135,15 @@ const Input: FC<InputProps> = ({
             className={clsx(
               'absolute transition-all duration-300 pointer-events-none',
               topClass,
-              (hasFocus || hasValue)
+              hasFocus || hasValue
                 ? 'bg-inherit text-gray-600 left-0'
-                : 'text-base text-gray-400 left-4'
+                : 'text-base text-gray-400 left-4',
             )}
           >
             {label}
           </label>
         </div>
-        {errors[id] && (
-          <span className={errorWarningStyles}>This field is required</span>
-        )}
+        {errors[id] && <span className={errorWarningStyles}>This field is required</span>}
       </div>
     )
   }
@@ -182,19 +192,16 @@ const Input: FC<InputProps> = ({
             />
             {/* Show/hide password icon */}
             {type === 'password' && allowShowPassword && (
-                <div
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer"
-                  onClick={() => setShowPassword((prev) => !prev)}
-                >
-                  {showPassword ? <EyeOff /> : <Eye />}
-                </div>
-              )}
+              <div
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {showPassword ? <EyeOff /> : <Eye />}
+              </div>
+            )}
           </div>
-          
         )}
-        {errors[id] && (
-          <span className={errorWarningStyles}>This field is required</span>
-        )}
+        {errors[id] && <span className={errorWarningStyles}>This field is required</span>}
       </div>
     </div>
   )

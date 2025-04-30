@@ -5,6 +5,11 @@ import { siteName } from '@payload-config'
 
 export const metadata: Metadata = {
   title: `Site Under Maintenance | ${siteName}`,
+  openGraph: {
+    title: `${siteName}`,
+    description: `${siteName} is currently undergoing maintenance.`,
+    images: '/maintenance.png',
+  },
 }
 export default async function Page() {
   const settings = await getSettings()
