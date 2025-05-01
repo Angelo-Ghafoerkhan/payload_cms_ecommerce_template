@@ -109,7 +109,7 @@ export const DefaultNav: React.FC<NavProps> = async (props) => {
             user,
           },
         })}
-        {navPreferences && <DefaultNavClient groups={groups} navPreferences={navPreferences} />}
+        <DefaultNavClient groups={groups} navPreferences={navPreferences} />
         {RenderServerComponent({
           clientProps: {
             documentSubViewType,

@@ -22,6 +22,7 @@ export const Faqs: CollectionConfig<'faqs'> = {
   },
   admin: {
     useAsTitle: 'title',
+    group: 'Website',
   },
   fields: [
     {

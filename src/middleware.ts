@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 async function getSettings() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/globals/settings?depth=2`)
 
+  console.log(res)
   if (!res.ok) return { enableMaintenanceMode: false }
   const data = await res.json()
   // Assuming your global Payload document is stored in "data.doc"

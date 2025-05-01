@@ -27,7 +27,11 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
 export const plugins: Plugin[] = [
   redirectsPlugin({
     collections: ['pages', 'posts'],
+
     overrides: {
+      admin: {
+        group: 'Admin',
+      },
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
@@ -59,7 +63,15 @@ export const plugins: Plugin[] = [
     fields: {
       payment: false,
     },
+    formSubmissionOverrides: {
+      admin: {
+        group: 'Forms',
+      },
+    },
     formOverrides: {
+      admin: {
+        group: 'Forms',
+      },
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
           if ('name' in field && field.name === 'confirmationMessage') {
@@ -85,6 +97,9 @@ export const plugins: Plugin[] = [
     collections: ['posts'],
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
+      admin: {
+        group: 'Posts',
+      },
       fields: ({ defaultFields }) => {
         return [...defaultFields, ...searchFields]
       },
