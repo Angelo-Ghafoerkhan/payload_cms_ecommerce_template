@@ -4,7 +4,7 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
-
+    
     "baseUrl": ".",
     "esModuleInterop": true,
     "target": "ES2022",
@@ -43,7 +43,6 @@
     }
   },
   "include": [
-    "middleware.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
