@@ -192,6 +192,7 @@ export const Header: GlobalConfig = {
               type: 'checkbox',
               admin: {
                 position: 'sidebar',
+                description: 'Makes the header stick to the top of the page.',
               },
             },
             {
@@ -200,6 +201,15 @@ export const Header: GlobalConfig = {
               admin: {
                 position: 'sidebar',
                 condition: (data, siblingData) => siblingData.sticky,
+                description: 'Hides the header when scrolling down and shows it when scrolling up.',
+              },
+            },
+            {
+              name: 'isHovering',
+              type: 'checkbox',
+              admin: {
+                description:
+                  'If enabled the header will be shown when hovering over the top of the page.',
               },
             },
           ],

@@ -41,7 +41,9 @@ export const Pages: CollectionConfig<'pages'> = {
     title: true,
     slug: true,
   },
+  disableDuplicate: false,
   admin: {
+    disableCopyToLocale: false,
     group: 'Website',
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {

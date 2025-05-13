@@ -80,24 +80,27 @@ const MobileNav: React.FC<{ header: HeaderType; settings: Setting }> = ({ header
 
         <MobileMenu close={close} header={header} />
 
-        <div className="container flex flex-col max-w-[470px] w-full border border-secondary shadow-sm rounded-xl py-2">
-          {header.settings?.showPhone && (
-            <Link
-              href={`tel:${settings?.phoneNumber}`}
-              className="hover:text-secondary text-lg font-semibold"
-            >
-              {settings.phoneNumber}
-            </Link>
-          )}
-          {header.settings?.showEmail && (
-            <Link
-              href={`mailto:${settings?.email}`}
-              className="hover:text-secondary text-lg font-semibold"
-            >
-              {settings.email}
-            </Link>
-          )}
-        </div>
+        {header.settings?.showPhone ||
+          (header.settings?.showEmail && (
+            <div className="container flex flex-col max-w-[470px] w-full border border-secondary shadow-sm rounded-xl py-2">
+              {header.settings?.showPhone && (
+                <Link
+                  href={`tel:${settings?.phoneNumber}`}
+                  className="hover:text-secondary text-lg font-semibold"
+                >
+                  {settings.phoneNumber}
+                </Link>
+              )}
+              {header.settings?.showEmail && (
+                <Link
+                  href={`mailto:${settings?.email}`}
+                  className="hover:text-secondary text-lg font-semibold"
+                >
+                  {settings.email}
+                </Link>
+              )}
+            </div>
+          ))}
         <div className="container flex flex-col max-w-[500px] w-full">
           {header.settings?.showCTA && header.settings?.callToAction?.link && (
             <CMSLink

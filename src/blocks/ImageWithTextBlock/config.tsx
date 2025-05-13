@@ -1,3 +1,5 @@
+import { animationField } from '@/fields/Animation/field'
+
 import {
   FixedToolbarFeature,
   HeadingFeature,
@@ -11,78 +13,93 @@ import { Block } from 'payload'
 export const ImageWithTextBlock: Block = {
   slug: 'imageWithTextBlock',
   interfaceName: 'ImageWithTextBlock',
+  imageURL: '/images/blocks/image-with-text-block.jpg',
   fields: [
     {
-      name: 'meta',
-      type: 'group',
-      admin: {
-        position: 'sidebar',
-      },
-      fields: [
+      type: 'tabs',
+      tabs: [
         {
-          type: 'row',
+          label: 'Content',
           fields: [
             {
-              name: 'removeTitle',
-              type: 'checkbox',
+              name: 'meta',
+              type: 'group',
+              admin: {
+                position: 'sidebar',
+              },
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'removeTitle',
+                      type: 'checkbox',
+                    },
+                    {
+                      name: 'flipImage',
+                      type: 'checkbox',
+                    },
+                    {
+                      name: 'primaryBackgroundColor',
+                      type: 'checkbox',
+                    },
+                  ],
+                },
+              ],
             },
             {
-              name: 'flipImage',
-              type: 'checkbox',
+              name: 'title',
+              type: 'text',
+              admin: {
+                condition: (data, siblingData) => !siblingData.meta.removeTitle,
+              },
+              required: true,
             },
             {
-              name: 'primaryBackgroundColor',
-              type: 'checkbox',
+              name: 'images',
+              type: 'upload',
+              relationTo: 'media',
+              hasMany: true,
+              minRows: 1,
+            },
+            {
+              name: 'text',
+              type: 'richText',
+              required: true,
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => {
+                  return [
+                    ...rootFeatures,
+                    HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
+                    FixedToolbarFeature(),
+                    InlineToolbarFeature(),
+                    OrderedListFeature(),
+                    UnorderedListFeature(),
+                  ]
+                },
+              }),
+            },
+            {
+              name: 'callToAction',
+              type: 'group',
+              fields: [
+                {
+                  name: 'text',
+                  type: 'text',
+                  required: false,
+                },
+                {
+                  name: 'link',
+                  type: 'text',
+                  required: false,
+                },
+              ],
             },
           ],
         },
-      ],
-    },
-    {
-      name: 'title',
-      type: 'text',
-      admin: {
-        condition: (data, siblingData) => !siblingData.meta.removeTitle,
-      },
-      required: true,
-    },
-    {
-      name: 'images',
-      type: 'upload',
-      relationTo: 'media',
-      hasMany: true,
-      minRows: 1,
-    },
-    {
-      name: 'text',
-      type: 'richText',
-      required: true,
-      editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-            OrderedListFeature(),
-            UnorderedListFeature(),
-          ]
-        },
-      }),
-    },
-    {
-      name: 'callToAction',
-      type: 'group',
-      fields: [
         {
-          name: 'text',
-          type: 'text',
-          required: false,
-        },
-        {
-          name: 'link',
-          type: 'text',
-          required: false,
+          label: 'Animation',
+          fields: [animationField],
         },
       ],
     },

@@ -1,4 +1,7 @@
+// src/components/RenderBlocks.tsx
+
 import React, { Fragment } from 'react'
+import dynamic from 'next/dynamic'
 import type { Faq, Page } from '@/payload-types'
 
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
@@ -10,8 +13,11 @@ import { GalleryBlock } from './Gallery/component'
 import FAQBlock from './FAQBlock'
 import ImageWithTextBlock from './ImageWithTextBlock'
 import StepItemGrid from './StepItemGrid/Component'
-import FAQSchema from '@/collections/Schemas/FAQSchema'
 import { ContactSection } from './ContactSection/Component'
+import TabsBlock from './TabsBlock'
+import ImageLinkBlock from './ImageLink'
+import LogoCarouselBlock from './LogoCarousel'
+import FAQSchema from '@/collections/Schemas/FAQSchema'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -21,48 +27,67 @@ const blockComponents = {
   faqBlock: FAQBlock,
   formBlock: FormBlock,
   gallery: GalleryBlock,
+  imageLinkBlock: ImageLinkBlock,
   imageWithTextBlock: ImageWithTextBlock,
+  logoCarouselBlock: LogoCarouselBlock,
   mediaBlock: MediaBlock,
   stepItemGrid: StepItemGrid,
+  tabsBlock: TabsBlock,
 }
 
-// Define an interface for FAQ blocks.
+// dynamically load your animation renderer on the client
+const AnimationRenderer = dynamic(() => import('@/fields/Animation/RenderAnimation'), {})
+
+// type guard for FAQ blocks
 interface FAQBlockType {
   blockType: 'faqBlock'
   faqs: Faq
 }
-
-// Type guard function to determine if a block is an FAQ block.
 function isFAQBlock(block: any): block is FAQBlockType {
   return block?.blockType === 'faqBlock' && block.faqs && Array.isArray(block.faqs.questions)
 }
 
-export const RenderBlocks: React.FC<{
-  blocks: Page['layout'][0][]
-}> = ({ blocks }) => {
-  const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
+export const RenderBlocks: React.FC<{ blocks: Page['layout'][0][] }> = ({ blocks }) => {
+  if (!Array.isArray(blocks) || blocks.length === 0) return null
 
-  // Use the type guard to extract FAQ blocks.
+  // collect FAQ blocks for the schema render later
   const faqBlocks = blocks.filter(isFAQBlock)
 
   return (
     <Fragment>
-      {hasBlocks &&
-        blocks.map((block, index) => {
-          const { blockType } = block
-          if (blockType && blockType in blockComponents) {
-            const Block = blockComponents[blockType]
-            if (Block) {
-              return (
-                <div className="my-16" key={index}>
-                  {/* @ts-expect-error: there may be type mismatches */}
-                  <Block {...block} disableInnerContainer />
-                </div>
-              )
-            }
-          }
-          return null
-        })}
+      {blocks.map((block, index) => {
+        const { blockType, animation } = block as any
+        const Block = blockType && (blockComponents as any)[blockType]
+        if (!Block) return null
+
+        // create the block content
+        const content = <Block {...block} disableInnerContainer />
+
+        // if animation is enabled, wrap it
+        if (animation?.enabled) {
+          return (
+            <div className="my-16" key={index}>
+              <AnimationRenderer
+                trigger={animation.trigger}
+                type={animation.type}
+                duration={animation.duration}
+                delay={animation.delay}
+              >
+                {content}
+              </AnimationRenderer>
+            </div>
+          )
+        }
+
+        // otherwise, just render normally
+        return (
+          <div className="my-16" key={index}>
+            {content}
+          </div>
+        )
+      })}
+
+      {/* render FAQ schema below all blocks that were FAQ blocks */}
       {faqBlocks.length > 0 && <FAQSchema faqBlocks={faqBlocks} />}
     </Fragment>
   )

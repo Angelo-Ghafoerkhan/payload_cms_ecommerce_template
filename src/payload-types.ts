@@ -798,6 +798,14 @@ export interface ImageWithTextBlock {
     text?: string | null;
     link?: string | null;
   };
+  animation?: {
+    enabled?: boolean | null;
+    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
+    threshold?: number | null;
+    duration?: number | null;
+    delay?: number | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'imageWithTextBlock';
@@ -1695,6 +1703,16 @@ export interface ImageWithTextBlockSelect<T extends boolean = true> {
         text?: T;
         link?: T;
       };
+  animation?:
+    | T
+    | {
+        enabled?: T;
+        trigger?: T;
+        type?: T;
+        threshold?: T;
+        duration?: T;
+        delay?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -2581,8 +2599,18 @@ export interface Header {
   };
   settings?: {
     header?: {
+      /**
+       * Makes the header stick to the top of the page.
+       */
       sticky?: boolean | null;
+      /**
+       * Hides the header when scrolling down and shows it when scrolling up.
+       */
       hideOnScrollDown?: boolean | null;
+      /**
+       * If enabled the header will be shown when hovering over the top of the page.
+       */
+      isHovering?: boolean | null;
     };
     showPhone?: boolean | null;
     showEmail?: boolean | null;
@@ -2908,6 +2936,7 @@ export interface HeaderSelect<T extends boolean = true> {
           | {
               sticky?: T;
               hideOnScrollDown?: T;
+              isHovering?: T;
             };
         showPhone?: T;
         showEmail?: T;

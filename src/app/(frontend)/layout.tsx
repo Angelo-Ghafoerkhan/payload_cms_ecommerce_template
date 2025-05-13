@@ -14,24 +14,21 @@ import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 import local from 'next/font/local'
 import { getServerSideURL } from '@/utilities/getURL'
-import { Lato } from 'next/font/google'
+import { Inter, Lato, Roboto } from 'next/font/google'
 import Favicon from '@/components/Favicon'
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 
 import './globals.css'
 import { getSettings } from '@/Globals/Settings/Component'
 
-const goodTimes = local({
-  src: [
-    {
-      path: '../../../public/fonts/Good-Times-Rg.otf',
-      weight: '800',
-    },
-  ],
+const roboto = Roboto({
+  subsets: ['latin'],
+  display: 'swap',
   variable: '--font-header',
+  weight: ['700', '900'],
 })
 
-const lato = Lato({
+const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-body',
@@ -43,7 +40,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const settings = await getSettings()
 
   return (
-    <html className={cn(goodTimes.variable, lato.variable)} lang="en" suppressHydrationWarning>
+    <html className={cn(roboto.variable, inter.variable)} lang="en" suppressHydrationWarning>
       <head>
         <InitTheme />
         <Favicon head />
