@@ -358,6 +358,7 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
+    alignContent?: ('left' | 'center' | 'right') | null;
     media?: (number | null) | Media;
   };
   layout: (
@@ -1570,6 +1571,7 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               id?: T;
             };
+        alignContent?: T;
         media?: T;
       };
   layout?:

@@ -1,6 +1,7 @@
 import type { Field } from 'payload'
 
 import {
+  AlignFeature,
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
@@ -38,6 +39,7 @@ export const hero: Field = {
       ],
       required: true,
     },
+
     {
       name: 'richText',
       type: 'richText',
@@ -48,6 +50,7 @@ export const hero: Field = {
             HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
             FixedToolbarFeature(),
             InlineToolbarFeature(),
+            AlignFeature(),
           ]
         },
       }),
@@ -58,6 +61,17 @@ export const hero: Field = {
         maxRows: 2,
       },
     }),
+    {
+      name: 'alignContent',
+      type: 'select',
+      label: 'Align Content',
+      options: [
+        { label: 'Left', value: 'left' },
+        { label: 'Center', value: 'center' },
+        { label: 'Right', value: 'right' },
+      ],
+      defaultValue: 'left',
+    },
     {
       name: 'media',
       type: 'upload',
