@@ -17,10 +17,6 @@ export const ImageLinkBlock: Block = {
       type: 'richText',
       required: true,
     },
-    link({
-      overrides: {
-        name: 'url',
-      },
-    }),
+    link({ disableIcon: true, disableLabel: true }),
   ],
 }

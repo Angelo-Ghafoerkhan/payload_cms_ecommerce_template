@@ -1,6 +1,10 @@
 // src/components/RenderBlocks.tsx
+'use client'
+
 import React, { Fragment } from 'react'
+import dynamic from 'next/dynamic'
 import type { Page, Faq } from '@/payload-types'
+
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
@@ -13,16 +17,12 @@ import ImageLinkBlock from './ImageLink'
 import LogoCarouselBlock from './LogoCarousel'
 import FAQSchema from '@/collections/Schemas/FAQSchema'
 import TabsBlock from './TabsBlock/component'
-import ArchiveBlock from './ArchiveBlock/Component'
-import ContactSection from './ContactSection/Component'
 import RenderAnimation from '@/fields/Animation/RenderAnimation'
 import InfoCardBlock from './InfoCard/component'
 import StaffImageSpielBlock from './StaffImageSpielBlock/component'
 import { GoogleMap } from './GoogleMap/component'
 
 const blockComponents: Record<string, React.ComponentType<any>> = {
-  archive: ArchiveBlock,
-  contactSection: ContactSection,
   content: ContentBlock,
   cta: CallToActionBlock,
   faqBlock: FAQBlock,
@@ -52,7 +52,10 @@ function isFAQBlock(block: any): block is FAQBlockType {
   return block.blockType === 'faqBlock' && block.faqs && Array.isArray(block.faqs.questions)
 }
 
-export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks, excludeBlockTypes = [] }) => {
+export const RenderClientBlocks: React.FC<RenderBlocksProps> = ({
+  blocks,
+  excludeBlockTypes = [],
+}) => {
   if (!Array.isArray(blocks) || blocks.length === 0) return null
 
   const faqBlocks = blocks.filter(isFAQBlock)
@@ -97,4 +100,4 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks, excludeBlock
   )
 }
 
-export default RenderBlocks
+export default RenderClientBlocks

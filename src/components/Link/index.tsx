@@ -4,8 +4,8 @@ import { Button, type ButtonProps } from '@/components/ui/button'
 import { cn } from '@/utilities/ui'
 import Link from 'next/link'
 import React from 'react'
-
 import type { Page, Post, Product, ProductCategory } from '@/payload-types'
+import RenderIcon, { IconGroupValue } from '@/fields/IconSelector/RenderIcon'
 
 type CMSLinkType = {
   appearance?: 'inline' | ButtonProps['variant']
@@ -29,59 +29,68 @@ type CMSLinkType = {
   url?: string | null
   onClick?: () => void
   hideLabel?: boolean
+  icon?: IconGroupValue
 }
 
-export const CMSLink: React.FC<CMSLinkType> = (props) => {
-  const {
-    type,
-    appearance = 'inline',
-    children,
-    className,
-    label,
-    newTab,
-    reference,
-    size: sizeFromProps,
-    url,
-    onClick,
-    hideLabel = false,
-  } = props
-
-  const handleClick = () => {
-    onClick?.()
-  }
-
+export const CMSLink: React.FC<CMSLinkType> = ({
+  type,
+  appearance = 'inline',
+  children,
+  className,
+  label,
+  newTab,
+  reference,
+  size: sizeFromProps,
+  url,
+  onClick,
+  hideLabel = false,
+  icon,
+}) => {
+  /* ------------------------------------------------ link target -------- */
   let href: string | null | undefined = url
 
   if (type === 'reference' && typeof reference?.value === 'object') {
     if (reference.relationTo === 'product-categories' || reference.relationTo === 'products') {
-      // For categories or products, use the 'url' field if available.
       href = `/${(reference.value as { url?: string }).url}` || ''
     } else if ((reference.value as any).slug) {
-      // For other types, use slug with a base path if not pages.
       href = `${reference.relationTo !== 'pages' ? `/${reference.relationTo}` : ''}/${
         (reference.value as any).slug
       }`
     }
   }
 
-  const size = appearance === 'link' ? 'clear' : sizeFromProps
   const newTabProps = newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {}
 
-  /* Ensure we don't break any styles set by richText */
+  /* ------------------------------------------------ common classes ----- */
+  const withIconGap = icon ? 'inline-flex items-center gap-2' : ''
+  const linkClasses = cn(className, withIconGap)
+
+  /* ------------------------------------------------ inline ------------- */
   if (appearance === 'inline') {
     return (
-      <Link className={cn(className)} href={href || ''} {...newTabProps}>
+      <Link className={linkClasses} href={href || ''} {...newTabProps}>
         {label && !hideLabel && label}
-        {children && children}
+        {children}
+        {icon && <RenderIcon icon={icon} />}
       </Link>
     )
   }
 
+  /* ------------------------------------------------ button styles ------ */
+  const size = appearance === 'link' ? 'clear' : sizeFromProps
+
   return (
-    <Button asChild className={className} size={size} variant={appearance} onClick={handleClick}>
-      <Link className={cn(className)} href={href || ''} {...newTabProps}>
+    <Button
+      asChild
+      className={className}
+      size={size}
+      variant={appearance}
+      onClick={() => onClick?.()}
+    >
+      <Link className={linkClasses} href={href || ''} {...newTabProps}>
         {label && !hideLabel && label}
-        {children && children}
+        {children}
+        {icon && <RenderIcon icon={icon} />}
       </Link>
     </Button>
   )

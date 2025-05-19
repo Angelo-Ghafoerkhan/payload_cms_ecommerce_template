@@ -63,3 +63,5 @@ export const ArchiveBlock: React.FC<
     </div>
   )
 }
+
+export default ArchiveBlock

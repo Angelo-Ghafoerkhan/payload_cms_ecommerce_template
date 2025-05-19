@@ -1,13 +1,22 @@
 import type { Field, GroupField } from 'payload'
 
 import deepMerge from '@/utilities/deepMerge'
+import iconField from './IconSelector/iconField'
 
-export type LinkAppearances = 'default' | 'outline'
+export type LinkAppearances = 'default' | 'secondary' | 'dark' | 'outline'
 
 export const appearanceOptions: Record<LinkAppearances, { label: string; value: string }> = {
   default: {
     label: 'Default',
     value: 'default',
+  },
+  secondary: {
+    label: 'Secondary',
+    value: 'secondary',
+  },
+  dark: {
+    label: 'Dark',
+    value: 'dark',
   },
   outline: {
     label: 'Outline',
@@ -18,6 +27,7 @@ export const appearanceOptions: Record<LinkAppearances, { label: string; value: 
 type LinkType = (options?: {
   appearances?: LinkAppearances[] | false
   disableLabel?: boolean
+  disableIcon?: boolean
   overrides?: Partial<GroupField>
   condition?: (data: Partial<any>, siblingData: Partial<any>) => boolean
 }) => Field
@@ -25,6 +35,7 @@ type LinkType = (options?: {
 export const link: LinkType = ({
   appearances,
   disableLabel = false,
+  disableIcon = false,
   overrides = {},
   condition,
 } = {}) => {
@@ -125,11 +136,10 @@ export const link: LinkType = ({
   }
 
   if (appearances !== false) {
-    let appearanceOptionsToUse = [appearanceOptions.default, appearanceOptions.outline]
-
-    if (appearances) {
-      appearanceOptionsToUse = appearances.map((appearance) => appearanceOptions[appearance])
-    }
+    const appearanceOptionsToUse =
+      appearances === undefined
+        ? Object.values(appearanceOptions) // all four
+        : appearances.map((a) => appearanceOptions[a])
 
     linkResult.fields.push({
       name: 'appearance',
@@ -140,6 +150,15 @@ export const link: LinkType = ({
       defaultValue: 'default',
       options: appearanceOptionsToUse,
     })
+
+    if (!disableIcon) {
+      linkResult.fields.push({
+        name: 'showIcon',
+        type: 'checkbox',
+        label: 'Show an icon in the button',
+      })
+      linkResult.fields.push(iconField({ condition: (data, siblingData) => siblingData.showIcon }))
+    }
   }
 
   return deepMerge(linkResult, overrides)

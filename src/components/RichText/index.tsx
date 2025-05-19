@@ -27,6 +27,12 @@ import ImageWithTextOverlayBlock, {
 import SubscriptionPlanBlock, {
   SubscriptionPlanBlockProps,
 } from '@/blocks/SubscriptionPlanBlock/Component'
+import InfoCardBlock, { InfoCardBlockProps } from '@/blocks/InfoCard/component'
+import ImageLinkBlock, { ImageLinkBlockProps } from '@/blocks/ImageLink'
+import StaffImageSpielBlock, {
+  StaffImageSpielBlockProps,
+} from '@/blocks/StaffImageSpielBlock/component'
+import { GoogleMap, GoogleMapBlockProps } from '@/blocks/GoogleMap/component'
 
 type NodeTypes =
   | DefaultNodeTypes
@@ -65,11 +71,27 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
     ),
     code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
     cta: ({ node }) => <CallToActionBlock {...node.fields} />,
+
+    googleMap: ({ node }: { node: SerializedBlockNode<GoogleMapBlockProps> }) => (
+      <GoogleMap {...node.fields} enableContainer={false} />
+    ),
+
+    infoCardBlock: ({ node }: { node: SerializedBlockNode<InfoCardBlockProps> }) => (
+      <InfoCardBlock {...node.fields} />
+    ),
+    imageLinkBlock: ({ node }: { node: SerializedBlockNode<ImageLinkBlockProps> }) => (
+      <ImageLinkBlock {...node.fields} />
+    ),
     imageWithTextOverlayBlock: ({
       node,
     }: {
       node: SerializedBlockNode<ImageWithTextOverlayBlockProps>
     }) => <ImageWithTextOverlayBlock {...node.fields} />,
+
+    staffImageSpielBlock: ({ node }: { node: SerializedBlockNode<StaffImageSpielBlockProps> }) => (
+      <StaffImageSpielBlock {...node.fields} />
+    ),
+
     subscriptionPlanBlock: ({
       node,
     }: {
@@ -94,7 +116,7 @@ export default function RichText(props: Props) {
         {
           container: enableGutter,
           'max-w-none': !enableGutter,
-          'mx-auto prose md:prose-md dark:prose-invert': enableProse,
+          'mx-auto prose md:prose-md dark:prose-invert h-full': enableProse,
         },
         className,
       )}

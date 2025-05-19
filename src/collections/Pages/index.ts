@@ -25,6 +25,7 @@ import { FAQBlock } from '@/blocks/FAQBlock/config'
 import { ImageWithTextBlock } from '@/blocks/ImageWithTextBlock/config'
 import { StepItemGridBlock } from '@/blocks/StepItemGrid/config'
 import { ContactSectionBlock } from '@/blocks/ContactSection/config'
+import { DefaultBlockOptions } from '@/blocks/BlockOptions'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -83,18 +84,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [
-                CallToAction,
-                ContactSectionBlock,
-                Content,
-                FAQBlock,
-                Gallery,
-                ImageWithTextBlock,
-                MediaBlock,
-                Archive,
-                FormBlock,
-                StepItemGridBlock,
-              ],
+              blocks: DefaultBlockOptions,
               required: true,
               admin: {
                 initCollapsed: true,

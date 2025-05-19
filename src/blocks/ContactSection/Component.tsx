@@ -6,3 +6,5 @@ export async function ContactSection() {
 
   return <ContactSectionClient settings={settings} />
 }
+
+export default ContactSection

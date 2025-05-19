@@ -10,8 +10,7 @@ import {
 } from '@payloadcms/richtext-lexical'
 
 import { link } from '@/fields/link'
-import { ImageWithTextOverlayBlock } from '../ImageWithOverlayText/config'
-import { SubscriptionPlanBlock } from '../SubscriptionPlanBlock/config'
+import { SingleBlockOptions } from '../BlockOptions'
 
 const columnFields: Field[] = [
   {
@@ -48,7 +47,9 @@ const columnFields: Field[] = [
           FixedToolbarFeature(),
           InlineToolbarFeature(),
           BlocksFeature({
-            blocks: [ImageWithTextOverlayBlock, SubscriptionPlanBlock],
+            blocks: SingleBlockOptions.filter(
+              (block): block is Block => 'fields' in block && 'slug' in block,
+            ),
           }),
           AlignFeature(),
         ]

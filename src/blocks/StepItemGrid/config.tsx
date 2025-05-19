@@ -9,6 +9,7 @@ import {
 
 export const StepItemGridBlock: Block = {
   slug: 'stepItemGrid',
+  imageURL: '/images/blocks/step-item-grid.jpg',
   fields: [
     {
       name: 'items',
