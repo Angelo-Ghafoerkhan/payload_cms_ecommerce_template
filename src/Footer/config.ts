@@ -90,6 +90,44 @@ export const Footer: GlobalConfig = {
                     },
                   ],
                 },
+                // If columnType is rows
+                {
+                  name: 'rows',
+                  type: 'array',
+                  minRows: 1,
+                  maxRows: 3,
+                  admin: {
+                    condition: (data, siblingData) => siblingData.columnType === 'rows',
+                  },
+                  fields: [
+                    {
+                      name: 'rowType',
+                      type: 'select',
+                      options: [
+                        {
+                          label: 'Text',
+                          value: 'text',
+                        },
+                        {
+                          label: 'Logo',
+                          value: 'Logo',
+                        },
+                        {
+                          label: 'Location',
+                          value: 'location',
+                        },
+                      ],
+                    },
+                    {
+                      name: 'text',
+                      type: 'richText',
+                      editor,
+                      admin: {
+                        condition: (data, siblingData) => siblingData.rowType === 'text',
+                      },
+                    },
+                  ],
+                },
                 // If columnType is menu
                 {
                   name: 'menuType',

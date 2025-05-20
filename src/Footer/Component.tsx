@@ -1,6 +1,6 @@
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import React from 'react'
-
+import { MapPin } from 'lucide-react'
 import type { Footer, Setting } from '@/payload-types'
 
 import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
@@ -11,12 +11,58 @@ import Link from 'next/link'
 import RenderSocials from '@/Globals/Settings/components/RenderSocials'
 import clsx from 'clsx'
 
+const renderRow = (
+  row: Extract<Footer['columns'][number]['rows'], Array<any>>[number],
+  i: number,
+  settings: Setting,
+) => {
+  switch (row?.rowType) {
+    case 'text':
+      return (
+        <RichText
+          key={i}
+          data={row.text}
+          enableProse={false}
+          enableGutter={false}
+          className="text-tertiary-foreground"
+        />
+      )
+
+    case 'Logo':
+      return (
+        <Logo
+          key={i}
+          width={settings.logoWidth ?? undefined}
+          height={settings.logoHeight ?? undefined}
+        />
+      )
+
+    case 'location':
+      if (!settings.businessAddress) return null
+      return (
+        <div key={i} className="flex items-start gap-2 text-tertiary-foreground">
+          <MapPin size={20} className="mt-0.5" />
+          <span>{settings.businessAddress}</span>
+        </div>
+      )
+
+    default:
+      return null
+  }
+}
+
 const renderColumn = (
   column: Extract<Footer['columns'], Array<any>>[number],
   index: number,
   settings: Setting,
 ): React.JSX.Element | null => {
   switch (column?.columnType) {
+    case 'rows':
+      return (
+        <div key={index} className="flex flex-col gap-4">
+          {column.rows?.map((row, i) => renderRow(row, i, settings))}
+        </div>
+      )
     case 'logo':
       return (
         <Logo
