@@ -140,7 +140,12 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, settings }) =>
         </div>
       )}
 
-      <div className="container mt-2">
+      <div
+        className={clsx(
+          'container mt-2',
+          data.settings?.header?.isHovering && 'bg-black/50 py-8 px-4 mx-2 rounded-2xl',
+        )}
+      >
         <div className="flex justify-between items-center gap-4">
           <Link href="/">
             <Logo

@@ -73,6 +73,10 @@ export const Footer: GlobalConfig = {
                   type: 'select',
                   options: [
                     {
+                      label: 'Rows',
+                      value: 'rows',
+                    },
+                    {
                       label: 'Logo',
                       value: 'logo',
                     },
