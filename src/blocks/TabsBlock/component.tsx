@@ -5,9 +5,7 @@ import React from 'react'
 import type { Block } from 'payload'
 import TabButton from './components/TabButton'
 import dynamic from 'next/dynamic'
-// import RenderClientBlocks from '../RenderClientBlocks'
-
-const RenderClientBlocks = dynamic(() => import('@/blocks/RenderClientBlocks'), { ssr: false })
+import RenderTabBlocks from '../RenderTabBlocks'
 
 interface TabsBlockProps {
   tabPosition: 'left' | 'middle' | 'right'
@@ -44,7 +42,7 @@ export default function TabsBlockClient({
       <div className="-mt-16">
         {/* Skip rendering tabsBlock inside itself */}
         {/* @ts-expect-error Server Component */}
-        <RenderClientBlocks blocks={tabs[activeTab]?.content} />
+        <RenderTabBlocks blocks={tabs[activeTab]?.content} />
       </div>
     </div>
   )

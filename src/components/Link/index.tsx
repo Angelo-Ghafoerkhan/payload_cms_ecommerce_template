@@ -5,7 +5,12 @@ import { cn } from '@/utilities/ui'
 import Link from 'next/link'
 import React from 'react'
 import type { Page, Post, Product, ProductCategory } from '@/payload-types'
-import RenderIcon, { IconGroupValue } from '@/fields/IconSelector/RenderIcon'
+import dynamic from 'next/dynamic'
+import type { IconGroupValue } from '@/fields/IconSelector/RenderIcon'
+
+const RenderIcon = dynamic(() => import('@/fields/IconSelector/RenderIcon'), {
+  ssr: false,
+})
 
 type CMSLinkType = {
   appearance?: 'inline' | ButtonProps['variant']

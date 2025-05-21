@@ -147,7 +147,9 @@ export default function LoginSignUp() {
             animatePlaceholder={false}
           />
           <div className="mt-8 flex">
-            <Button text="Request Password Reset" type="submit" onClick={handleRequestPassword} />
+            <Button type="submit" onClick={handleRequestPassword}>
+              Request Password Reset
+            </Button>
           </div>
         </form>
       </ModalNoConfirm>
@@ -209,7 +211,7 @@ export default function LoginSignUp() {
                 </div>
               )}
               <div className="flex mt-8">
-                <Button text={isSignUp ? 'Sign Up' : 'Log In'} type="submit" />
+                <Button type="submit">{isSignUp ? 'Sign Up' : 'Log In'}</Button>
               </div>
             </form>
             <div className="flex justify-center mt-4">

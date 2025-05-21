@@ -36,6 +36,8 @@ export const DefaultBlockOptions = [
 
 // These are the blocks that are usually used inside  RichText
 export const SingleBlockOptions = [
+  ContactSectionBlock,
+  FormBlock,
   GoogleMapBlock,
   ImageLinkBlock,
   ImageWithTextOverlayBlock,

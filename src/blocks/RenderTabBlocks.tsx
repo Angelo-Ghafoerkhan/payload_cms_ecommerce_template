@@ -2,7 +2,6 @@
 'use client'
 
 import React, { Fragment } from 'react'
-import dynamic from 'next/dynamic'
 import type { Page, Faq } from '@/payload-types'
 
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
@@ -16,14 +15,13 @@ import StepItemGrid from './StepItemGrid/Component'
 import ImageLinkBlock from './ImageLink'
 import LogoCarouselBlock from './LogoCarousel'
 import FAQSchema from '@/collections/Schemas/FAQSchema'
-import TabsBlock from './TabsBlock/component'
 import RenderAnimation from '@/fields/Animation/RenderAnimation'
 import InfoCardBlock from './InfoCard/component'
 import StaffImageSpielBlock from './StaffImageSpielBlock/component'
 import { GoogleMap } from './GoogleMap/component'
 
 const blockComponents: Record<string, React.ComponentType<any>> = {
-  content: ContentBlock,
+  // content: ContentBlock,
   cta: CallToActionBlock,
   faqBlock: FAQBlock,
   formBlock: FormBlock,
@@ -36,7 +34,6 @@ const blockComponents: Record<string, React.ComponentType<any>> = {
   mediaBlock: MediaBlock,
   staffImageSpielBlock: StaffImageSpielBlock,
   stepItemGrid: StepItemGrid,
-  tabsBlock: TabsBlock,
 }
 
 interface RenderBlocksProps {
@@ -52,7 +49,7 @@ function isFAQBlock(block: any): block is FAQBlockType {
   return block.blockType === 'faqBlock' && block.faqs && Array.isArray(block.faqs.questions)
 }
 
-export const RenderClientBlocks: React.FC<RenderBlocksProps> = ({
+export const RenderTabBlocks: React.FC<RenderBlocksProps> = ({
   blocks,
   excludeBlockTypes = [],
 }) => {
@@ -100,4 +97,4 @@ export const RenderClientBlocks: React.FC<RenderBlocksProps> = ({
   )
 }
 
-export default RenderClientBlocks
+export default RenderTabBlocks

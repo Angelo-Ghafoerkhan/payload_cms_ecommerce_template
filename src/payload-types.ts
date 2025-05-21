@@ -353,7 +353,15 @@ export interface Page {
             /**
              * Choose how the link should be rendered.
              */
-            appearance?: ('default' | 'outline') | null;
+            appearance?: ('default' | 'secondary' | 'dark' | 'outline') | null;
+            showIcon?: boolean | null;
+            icon?: {
+              source?: ('lucide' | 'upload') | null;
+              color?: string | null;
+              size?: number | null;
+              name?: string | null;
+              upload?: (number | null) | Media;
+            };
           };
           id?: string | null;
         }[]
@@ -378,7 +386,9 @@ export interface Page {
         blockName?: string | null;
         blockType: 'gallery';
       }
+    | GoogleMapBlock
     | ImageWithTextBlock
+    | LogoCarousel
     | MediaBlock
     | ArchiveBlock
     | FormBlock
@@ -406,6 +416,66 @@ export interface Page {
         id?: string | null;
         blockName?: string | null;
         blockType: 'stepItemGrid';
+      }
+    | {
+        tabPosition?: ('left' | 'middle' | 'right') | null;
+        initialTab?: number | null;
+        tabs?:
+          | {
+              title: string;
+              content?:
+                | (
+                    | CallToActionBlock
+                    | ContentBlock
+                    | {
+                        faqs: number | Faq;
+                        id?: string | null;
+                        blockName?: string | null;
+                        blockType: 'faqBlock';
+                      }
+                    | {
+                        title?: string | null;
+                        gallery: number | Gallery;
+                        id?: string | null;
+                        blockName?: string | null;
+                        blockType: 'gallery';
+                      }
+                    | ImageWithTextBlock
+                    | MediaBlock
+                    | FormBlock
+                    | {
+                        items?:
+                          | {
+                              richText?: {
+                                root: {
+                                  type: string;
+                                  children: {
+                                    type: string;
+                                    version: number;
+                                    [k: string]: unknown;
+                                  }[];
+                                  direction: ('ltr' | 'rtl') | null;
+                                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                                  indent: number;
+                                  version: number;
+                                };
+                                [k: string]: unknown;
+                              } | null;
+                              id?: string | null;
+                            }[]
+                          | null;
+                        id?: string | null;
+                        blockName?: string | null;
+                        blockType: 'stepItemGrid';
+                      }
+                  )[]
+                | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'tabsBlock';
       }
   )[];
   meta?: {
@@ -693,6 +763,14 @@ export interface CallToActionBlock {
            * Choose how the link should be rendered.
            */
           appearance?: ('default' | 'outline') | null;
+          showIcon?: boolean | null;
+          icon?: {
+            source?: ('lucide' | 'upload') | null;
+            color?: string | null;
+            size?: number | null;
+            name?: string | null;
+            upload?: (number | null) | Media;
+          };
         };
         id?: string | null;
       }[]
@@ -718,6 +796,7 @@ export interface ContentBlock {
   columns?:
     | {
         size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
+        contentType?: ('text' | 'block') | null;
         richText?: {
           root: {
             type: string;
@@ -733,6 +812,19 @@ export interface ContentBlock {
           };
           [k: string]: unknown;
         } | null;
+        block?:
+          | (
+              | ContactSectionBlock
+              | FormBlock
+              | GoogleMapBlock
+              | ImageLinkBlock
+              | ImageWithTextOverlayBlock
+              | InfoCardBlock
+              | MediaBlock
+              | StaffImageSpielBlock
+              | SubscriptionPlanBlock
+            )[]
+          | null;
         enableLink?: boolean | null;
         link?: {
           type?: ('reference' | 'custom') | null;
@@ -759,7 +851,15 @@ export interface ContentBlock {
           /**
            * Choose how the link should be rendered.
            */
-          appearance?: ('default' | 'outline') | null;
+          appearance?: ('default' | 'secondary' | 'dark' | 'outline') | null;
+          showIcon?: boolean | null;
+          icon?: {
+            source?: ('lucide' | 'upload') | null;
+            color?: string | null;
+            size?: number | null;
+            name?: string | null;
+            upload?: (number | null) | Media;
+          };
         };
         id?: string | null;
       }[]
@@ -767,93 +867,6 @@ export interface ContentBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'content';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ImageWithTextBlock".
- */
-export interface ImageWithTextBlock {
-  meta?: {
-    removeTitle?: boolean | null;
-    flipImage?: boolean | null;
-    primaryBackgroundColor?: boolean | null;
-  };
-  title?: string | null;
-  images?: (number | Media)[] | null;
-  text: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  callToAction?: {
-    text?: string | null;
-    link?: string | null;
-  };
-  animation?: {
-    enabled?: boolean | null;
-    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
-    type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
-    threshold?: number | null;
-    duration?: number | null;
-    delay?: number | null;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'imageWithTextBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlock".
- */
-export interface MediaBlock {
-  media: number | Media;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'mediaBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ArchiveBlock".
- */
-export interface ArchiveBlock {
-  introContent?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  populateBy?: ('collection' | 'selection') | null;
-  relationTo?: 'posts' | null;
-  categories?: (number | Category)[] | null;
-  limit?: number | null;
-  selectedDocs?:
-    | {
-        relationTo: 'posts';
-        value: number | Post;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'archive';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1056,6 +1069,320 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GoogleMapBlock".
+ */
+export interface GoogleMapBlock {
+  /**
+   * Click “Share” in Google Maps → “Embed a map” → copy the iframe src.
+   */
+  mapUrl: string;
+  height?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'googleMap';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageLinkBlock".
+ */
+export interface ImageLinkBlock {
+  image: number | Media;
+  text: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  link?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'product-categories';
+          value: number | ProductCategory;
+        } | null)
+      | ({
+          relationTo: 'products';
+          value: number | Product;
+        } | null);
+    url?: string | null;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'secondary' | 'dark' | 'outline') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'imageLinkBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageWithTextOverlayBlock".
+ */
+export interface ImageWithTextOverlayBlock {
+  image?: (number | null) | Media;
+  text: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  callToAction?: {
+    text?: string | null;
+    link?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'imageWithTextOverlayBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "InfoCardBlock".
+ */
+export interface InfoCardBlock {
+  icon?: {
+    source?: ('lucide' | 'upload') | null;
+    color?: string | null;
+    size?: number | null;
+    name?: string | null;
+    upload?: (number | null) | Media;
+  };
+  title?: string | null;
+  text?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'infoCardBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaBlock".
+ */
+export interface MediaBlock {
+  media: number | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mediaBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "staffImageSpielBlock".
+ */
+export interface StaffImageSpielBlock {
+  name: string;
+  jobTitle: string;
+  image: number | Media;
+  spiel: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'staffImageSpielBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SubscriptionPlanBlock".
+ */
+export interface SubscriptionPlanBlock {
+  subscriptionPlan?: (number | null) | Plan;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'subscriptionPlanBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "plans".
+ */
+export interface Plan {
+  id: number;
+  name: string;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  description_html?: string | null;
+  /**
+   * This plain-text description will be sent to Stripe for product details.
+   */
+  stripeDescription: string;
+  productId?: string | null;
+  price: number;
+  stripePriceId?: string | null;
+  /**
+   * How often payment is taken for the subscription.
+   */
+  billingCycle: 'day' | 'week' | 'month' | 'year';
+  /**
+   * The length of the subscription: 1, 3, 6 or 12 months.
+   */
+  subscriptionTerm: 'monthly' | 'quarterly' | 'semi-annually' | 'yearly';
+  status?: ('active' | 'inactive') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageWithTextBlock".
+ */
+export interface ImageWithTextBlock {
+  meta?: {
+    removeTitle?: boolean | null;
+    flipImage?: boolean | null;
+    primaryBackgroundColor?: boolean | null;
+  };
+  title?: string | null;
+  images?: (number | Media)[] | null;
+  text: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  callToAction?: {
+    text?: string | null;
+    link?: string | null;
+  };
+  animation?: {
+    enabled?: boolean | null;
+    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
+    threshold?: number | null;
+    duration?: number | null;
+    delay?: number | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'imageWithTextBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LogoCarousel".
+ */
+export interface LogoCarousel {
+  title?: string | null;
+  alignTitle?: ('left' | 'center' | 'right') | null;
+  duration?: number | null;
+  pauseOnHover?: boolean | null;
+  images: (number | Media)[];
+  animation?: {
+    enabled?: boolean | null;
+    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
+    threshold?: number | null;
+    duration?: number | null;
+    delay?: number | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'logoCarouselBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArchiveBlock".
+ */
+export interface ArchiveBlock {
+  introContent?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  populateBy?: ('collection' | 'selection') | null;
+  relationTo?: 'posts' | null;
+  categories?: (number | Category)[] | null;
+  limit?: number | null;
+  selectedDocs?:
+    | {
+        relationTo: 'posts';
+        value: number | Post;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'archive';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "orders".
  */
 export interface Order {
@@ -1149,48 +1476,6 @@ export interface Subscription {
   stripeId?: string | null;
   status: 'active' | 'pending' | 'paused' | 'cancelled';
   orders?: (number | SubscriptionOrder)[] | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "plans".
- */
-export interface Plan {
-  id: number;
-  name: string;
-  description: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  description_html?: string | null;
-  /**
-   * This plain-text description will be sent to Stripe for product details.
-   */
-  stripeDescription: string;
-  productId?: string | null;
-  price: number;
-  stripePriceId?: string | null;
-  /**
-   * How often payment is taken for the subscription.
-   */
-  billingCycle: 'day' | 'week' | 'month' | 'year';
-  /**
-   * The length of the subscription: 1, 3, 6 or 12 months.
-   */
-  subscriptionTerm: 'monthly' | 'quarterly' | 'semi-annually' | 'yearly';
-  status?: ('active' | 'inactive') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1568,6 +1853,16 @@ export interface PagesSelect<T extends boolean = true> {
                     url?: T;
                     label?: T;
                     appearance?: T;
+                    showIcon?: T;
+                    icon?:
+                      | T
+                      | {
+                          source?: T;
+                          color?: T;
+                          size?: T;
+                          name?: T;
+                          upload?: T;
+                        };
                   };
               id?: T;
             };
@@ -1595,7 +1890,9 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        googleMap?: T | GoogleMapBlockSelect<T>;
         imageWithTextBlock?: T | ImageWithTextBlockSelect<T>;
+        logoCarouselBlock?: T | LogoCarouselSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
@@ -1606,6 +1903,56 @@ export interface PagesSelect<T extends boolean = true> {
                 | T
                 | {
                     richText?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        tabsBlock?:
+          | T
+          | {
+              tabPosition?: T;
+              initialTab?: T;
+              tabs?:
+                | T
+                | {
+                    title?: T;
+                    content?:
+                      | T
+                      | {
+                          cta?: T | CallToActionBlockSelect<T>;
+                          content?: T | ContentBlockSelect<T>;
+                          faqBlock?:
+                            | T
+                            | {
+                                faqs?: T;
+                                id?: T;
+                                blockName?: T;
+                              };
+                          gallery?:
+                            | T
+                            | {
+                                title?: T;
+                                gallery?: T;
+                                id?: T;
+                                blockName?: T;
+                              };
+                          imageWithTextBlock?: T | ImageWithTextBlockSelect<T>;
+                          mediaBlock?: T | MediaBlockSelect<T>;
+                          formBlock?: T | FormBlockSelect<T>;
+                          stepItemGrid?:
+                            | T
+                            | {
+                                items?:
+                                  | T
+                                  | {
+                                      richText?: T;
+                                      id?: T;
+                                    };
+                                id?: T;
+                                blockName?: T;
+                              };
+                        };
                     id?: T;
                   };
               id?: T;
@@ -1644,6 +1991,16 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
               url?: T;
               label?: T;
               appearance?: T;
+              showIcon?: T;
+              icon?:
+                | T
+                | {
+                    source?: T;
+                    color?: T;
+                    size?: T;
+                    name?: T;
+                    upload?: T;
+                  };
             };
         id?: T;
       };
@@ -1667,7 +2024,21 @@ export interface ContentBlockSelect<T extends boolean = true> {
     | T
     | {
         size?: T;
+        contentType?: T;
         richText?: T;
+        block?:
+          | T
+          | {
+              contactSection?: T | ContactSectionBlockSelect<T>;
+              formBlock?: T | FormBlockSelect<T>;
+              googleMap?: T | GoogleMapBlockSelect<T>;
+              imageLinkBlock?: T | ImageLinkBlockSelect<T>;
+              imageWithTextOverlayBlock?: T | ImageWithTextOverlayBlockSelect<T>;
+              infoCardBlock?: T | InfoCardBlockSelect<T>;
+              mediaBlock?: T | MediaBlockSelect<T>;
+              staffImageSpielBlock?: T | StaffImageSpielBlockSelect<T>;
+              subscriptionPlanBlock?: T | SubscriptionPlanBlockSelect<T>;
+            };
         enableLink?: T;
         link?:
           | T
@@ -1678,9 +2049,124 @@ export interface ContentBlockSelect<T extends boolean = true> {
               url?: T;
               label?: T;
               appearance?: T;
+              showIcon?: T;
+              icon?:
+                | T
+                | {
+                    source?: T;
+                    color?: T;
+                    size?: T;
+                    name?: T;
+                    upload?: T;
+                  };
             };
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormBlock_select".
+ */
+export interface FormBlockSelect<T extends boolean = true> {
+  form?: T;
+  enableIntro?: T;
+  introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GoogleMapBlock_select".
+ */
+export interface GoogleMapBlockSelect<T extends boolean = true> {
+  mapUrl?: T;
+  height?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageLinkBlock_select".
+ */
+export interface ImageLinkBlockSelect<T extends boolean = true> {
+  image?: T;
+  text?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        appearance?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageWithTextOverlayBlock_select".
+ */
+export interface ImageWithTextOverlayBlockSelect<T extends boolean = true> {
+  image?: T;
+  text?: T;
+  callToAction?:
+    | T
+    | {
+        text?: T;
+        link?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "InfoCardBlock_select".
+ */
+export interface InfoCardBlockSelect<T extends boolean = true> {
+  icon?:
+    | T
+    | {
+        source?: T;
+        color?: T;
+        size?: T;
+        name?: T;
+        upload?: T;
+      };
+  title?: T;
+  text?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaBlock_select".
+ */
+export interface MediaBlockSelect<T extends boolean = true> {
+  media?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "staffImageSpielBlock_select".
+ */
+export interface StaffImageSpielBlockSelect<T extends boolean = true> {
+  name?: T;
+  jobTitle?: T;
+  image?: T;
+  spiel?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SubscriptionPlanBlock_select".
+ */
+export interface SubscriptionPlanBlockSelect<T extends boolean = true> {
+  subscriptionPlan?: T;
   id?: T;
   blockName?: T;
 }
@@ -1720,10 +2206,24 @@ export interface ImageWithTextBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlock_select".
+ * via the `definition` "LogoCarousel_select".
  */
-export interface MediaBlockSelect<T extends boolean = true> {
-  media?: T;
+export interface LogoCarouselSelect<T extends boolean = true> {
+  title?: T;
+  alignTitle?: T;
+  duration?: T;
+  pauseOnHover?: T;
+  images?: T;
+  animation?:
+    | T
+    | {
+        enabled?: T;
+        trigger?: T;
+        type?: T;
+        threshold?: T;
+        duration?: T;
+        delay?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -1738,17 +2238,6 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
   categories?: T;
   limit?: T;
   selectedDocs?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormBlock_select".
- */
-export interface FormBlockSelect<T extends boolean = true> {
-  form?: T;
-  enableIntro?: T;
-  introContent?: T;
   id?: T;
   blockName?: T;
 }
@@ -2658,7 +3147,28 @@ export interface Footer {
   id: number;
   columns?:
     | {
-        columnType?: ('logo' | 'menu' | 'cta') | null;
+        columnType?: ('rows' | 'logo' | 'menu' | 'cta') | null;
+        rows?:
+          | {
+              rowType?: ('text' | 'Logo' | 'location') | null;
+              text?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: string;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              id?: string | null;
+            }[]
+          | null;
         menuType?: ('custom' | 'contact') | null;
         menuTitle?: string | null;
         navItems?:
@@ -2974,6 +3484,13 @@ export interface FooterSelect<T extends boolean = true> {
     | T
     | {
         columnType?: T;
+        rows?:
+          | T
+          | {
+              rowType?: T;
+              text?: T;
+              id?: T;
+            };
         menuType?: T;
         menuTitle?: T;
         navItems?:
@@ -3078,45 +3595,6 @@ export interface TaskSchedulePublish {
     user?: (number | null) | User;
   };
   output?: unknown;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ImageWithTextOverlayBlock".
- */
-export interface ImageWithTextOverlayBlock {
-  image?: (number | null) | Media;
-  text: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  callToAction?: {
-    text?: string | null;
-    link?: string | null;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'imageWithTextOverlayBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "SubscriptionPlanBlock".
- */
-export interface SubscriptionPlanBlock {
-  subscriptionPlan?: (number | null) | Plan;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'subscriptionPlanBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -1,6 +1,11 @@
-import RenderIcon from '@/fields/IconSelector/RenderIcon'
+// import RenderIcon from '@/fields/IconSelector/RenderIcon'
 import RichText from '@/components/RichText'
 import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
+import dynamic from 'next/dynamic'
+
+const RenderIcon = dynamic(() => import('@/fields/IconSelector/RenderIcon'), {
+  ssr: false,
+})
 
 export interface InfoCardBlockProps {
   icon: any

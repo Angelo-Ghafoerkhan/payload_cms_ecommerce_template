@@ -1,4 +1,5 @@
 'use client'
+
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import React, { useEffect } from 'react'
 
@@ -9,7 +10,7 @@ import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
 import clsx from 'clsx'
 
-export const HighImpactHero: React.FC<Page['hero']> = ({
+export const MediumImpactHero: React.FC<Page['hero']> = ({
   links,
   media,
   richText,

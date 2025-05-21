@@ -5,7 +5,8 @@ import RichText from '@/components/RichText'
 import Image from 'next/image'
 import type { Media } from '@/payload-types'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
-import ArrowRight from 'public/svg/arrow-right.svg'
+import ArrowRight from './components/ArrowRight'
+
 export interface ImageLinkBlockProps {
   image: Media
   text: SerializedEditorState

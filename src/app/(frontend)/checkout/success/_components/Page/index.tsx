@@ -23,7 +23,9 @@ const PageContent = () => {
     <div className="min-h-screen flex flex-col items-center justify-center">
       <h1 className="text-5xl text-primary font-bold">We&#39;ve Got Your Order!</h1>
       <p className="text-lg my-8">You should have received an email with confirmation.</p>
-      <Button text="Continue Shopping" type="button" link="/" rounded="lg" />
+      <Button type="button" link="/" rounded="lg">
+        Continue Shopping
+      </Button>
     </div>
   )
 }

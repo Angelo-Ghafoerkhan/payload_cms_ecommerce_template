@@ -33,6 +33,8 @@ import StaffImageSpielBlock, {
   StaffImageSpielBlockProps,
 } from '@/blocks/StaffImageSpielBlock/component'
 import { GoogleMap, GoogleMapBlockProps } from '@/blocks/GoogleMap/component'
+import { FormBlock, FormBlockType } from '@/blocks/Form/Component'
+import ContactSection from '@/blocks/ContactSection/Component'
 
 type NodeTypes =
   | DefaultNodeTypes
@@ -70,7 +72,12 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
       />
     ),
     code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
+
     cta: ({ node }) => <CallToActionBlock {...node.fields} />,
+
+    formBlock: ({ node }: { node: SerializedBlockNode<FormBlockType> }) => (
+      <FormBlock {...node.fields} />
+    ),
 
     googleMap: ({ node }: { node: SerializedBlockNode<GoogleMapBlockProps> }) => (
       <GoogleMap {...node.fields} enableContainer={false} />

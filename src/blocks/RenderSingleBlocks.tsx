@@ -1,19 +1,11 @@
-// src/components/RenderBlocks.tsx
+// src/components/RenderSingleBlocks.tsx
 import React, { Fragment } from 'react'
 import type { Page, Faq } from '@/payload-types'
-import { CallToActionBlock } from '@/blocks/CallToAction/Component'
-import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
-import { GalleryBlock } from './Gallery/component'
-import FAQBlock from './FAQBlock'
 import ImageWithTextBlock from './ImageWithTextBlock'
-import StepItemGrid from './StepItemGrid/Component'
 import ImageLinkBlock from './ImageLink'
-import LogoCarouselBlock from './LogoCarousel'
 import FAQSchema from '@/collections/Schemas/FAQSchema'
-import TabsBlock from './TabsBlock/component'
-import ArchiveBlock from './ArchiveBlock/Component'
 import ContactSection from './ContactSection/Component'
 import RenderAnimation from '@/fields/Animation/RenderAnimation'
 import InfoCardBlock from './InfoCard/component'
@@ -22,29 +14,20 @@ import { GoogleMap } from './GoogleMap/component'
 import clsx from 'clsx'
 
 const blockComponents: Record<string, React.ComponentType<any>> = {
-  archive: ArchiveBlock,
   contactSection: ContactSection,
-  content: ContentBlock,
-  cta: CallToActionBlock,
-  faqBlock: FAQBlock,
   formBlock: FormBlock,
-  gallery: GalleryBlock,
   googleMap: GoogleMap,
   imageLinkBlock: ImageLinkBlock,
   imageWithTextBlock: ImageWithTextBlock,
   infoCardBlock: InfoCardBlock,
-  logoCarouselBlock: LogoCarouselBlock,
   mediaBlock: MediaBlock,
   staffImageSpielBlock: StaffImageSpielBlock,
-  stepItemGrid: StepItemGrid,
-  tabsBlock: TabsBlock,
 }
 
 interface RenderBlocksProps {
   blocks: Page['layout'][0][]
   excludeBlockTypes?: string[]
   excludeMargin?: boolean
-  clientOnly?: boolean
 }
 
 interface FAQBlockType {
@@ -55,11 +38,10 @@ function isFAQBlock(block: any): block is FAQBlockType {
   return block.blockType === 'faqBlock' && block.faqs && Array.isArray(block.faqs.questions)
 }
 
-export const RenderBlocks: React.FC<RenderBlocksProps> = ({
+export const RenderSingleBlocks: React.FC<RenderBlocksProps> = ({
   blocks,
   excludeBlockTypes = [],
   excludeMargin = false,
-  clientOnly = false,
 }) => {
   if (!Array.isArray(blocks) || blocks.length === 0) return null
 
@@ -105,4 +87,4 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({
   )
 }
 
-export default RenderBlocks
+export default RenderSingleBlocks

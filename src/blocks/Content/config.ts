@@ -11,6 +11,15 @@ import {
 
 import { link } from '@/fields/link'
 import { SingleBlockOptions } from '../BlockOptions'
+import { ContactSectionBlock } from '../ContactSection/config'
+import { FormBlock } from '../Form/config'
+import GoogleMapBlock from '../GoogleMap/config'
+import { ImageLinkBlock } from '../ImageLink/config'
+import { ImageWithTextOverlayBlock } from '../ImageWithOverlayText/config'
+import { InfoCardBlock } from '../InfoCard/config'
+import { StaffImageSpielBlock } from '../StaffImageSpielBlock/config'
+import { SubscriptionPlanBlock } from '../SubscriptionPlanBlock/config'
+import { MediaBlock } from '../MediaBlock/config'
 
 const columnFields: Field[] = [
   {
@@ -36,6 +45,22 @@ const columnFields: Field[] = [
       },
     ],
   },
+
+  {
+    name: 'contentType',
+    type: 'select',
+    options: [
+      {
+        label: 'Text',
+        value: 'text',
+      },
+      {
+        label: 'Block',
+        value: 'block',
+      },
+    ],
+    defaultValue: 'text',
+  },
   {
     name: 'richText',
     type: 'richText',
@@ -48,7 +73,8 @@ const columnFields: Field[] = [
           InlineToolbarFeature(),
           BlocksFeature({
             blocks: SingleBlockOptions.filter(
-              (block): block is Block => 'fields' in block && 'slug' in block,
+              (block): block is Block =>
+                'fields' in block && 'slug' in block && block.slug !== 'contactSection',
             ),
           }),
           AlignFeature(),
@@ -56,6 +82,31 @@ const columnFields: Field[] = [
       },
     }),
     label: false,
+    admin: {
+      condition: (_, siblingData) => {
+        return siblingData?.contentType === 'text'
+      },
+    },
+  },
+  {
+    name: 'block',
+    type: 'blocks',
+    blocks: [
+      ContactSectionBlock,
+      FormBlock,
+      GoogleMapBlock,
+      ImageLinkBlock,
+      ImageWithTextOverlayBlock,
+      InfoCardBlock,
+      MediaBlock,
+      StaffImageSpielBlock,
+      SubscriptionPlanBlock,
+    ],
+    admin: {
+      condition: (_, siblingData) => {
+        return siblingData?.contentType === 'block'
+      },
+    },
   },
   {
     name: 'enableLink',

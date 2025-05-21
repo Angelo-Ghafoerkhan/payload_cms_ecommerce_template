@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
+    "typeRoots": ["./types", "./node_modules/@types"],
     /* Strictness */
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
-    
+
     "baseUrl": ".",
     "esModuleInterop": true,
     "target": "ES2022",
@@ -51,6 +52,8 @@
     "next-sitemap.config.cjs"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/*.svg",
+    "**/*.scss"
   ]
 }

@@ -106,15 +106,14 @@ const PageContent = () => {
           <h1 className="font-header text-4xl">SELECTED PACKAGE</h1>
           <h2 className="text-2xl font-header my-3">{formattedSubscriptionTerm}</h2>
           <h3 className="text-xl mb-8">£{planData?.price} / month</h3>
-          <Button text="Change Package" type="button" link="/pricing" rounded="lg" />
+          <Button type="button" link="/pricing" rounded="lg">
+            Change Package
+          </Button>
 
           <div className="mt-20">
-            <Button
-              text="Proceed To Payment Setup"
-              type="button"
-              onClick={createSubscription}
-              rounded="lg"
-            />
+            <Button type="button" onClick={createSubscription} rounded="lg">
+              Proceed To Payment Setup
+            </Button>
           </div>
         </div>
       )}

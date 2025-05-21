@@ -1,24 +1,15 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import {
-  FieldValues,
-  RegisterOptions,
-  SubmitHandler,
-  useForm,
-  UseFormRegisterReturn,
-} from 'react-hook-form'
-import Input from '../forms/react-hook-form/Input/Input'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+
 import { toast } from 'react-toastify'
-import Button from '../Button'
-import { useEffect, useState } from 'react'
+import Button from '@/components/Button'
+import { useState } from 'react'
 import CreatePassword from '@/collections/Users/components/CreatePassword'
 
 const ResetPassword = () => {
   const [passwordsValid, setPasswordsValid] = useState(false)
-  const [lengthValid, setLengthValid] = useState(false)
-  const [capitalValid, setCapitalValid] = useState(false)
-  const [symbolValid, setSymbolValid] = useState(false)
 
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -32,7 +23,6 @@ const ResetPassword = () => {
   const {
     register,
     handleSubmit,
-    reset,
     watch,
     formState: { errors },
   } = useForm<FieldValues>({
@@ -78,7 +68,9 @@ const ResetPassword = () => {
       />
 
       <div className="flex justify-center items-center mt-16">
-        <Button text="Submit" type="submit" disabled={!passwordsValid} />
+        <Button type="submit" disabled={!passwordsValid}>
+          Submit
+        </Button>
       </div>
     </form>
   )

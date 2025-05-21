@@ -62,12 +62,9 @@ const SubscriptionPlanBlock: React.FC<SubscriptionPlanBlockProps> = ({ subscript
         <h3 className="m-0">{formattedSubscriptionTerm}</h3>
         <h4 className="font-body font-normal">£{plan.price} / month</h4>
         <RichText data={plan.description} />
-        <Button
-          type="button"
-          text="Sign Up Now"
-          rounded="lg"
-          link={`/subscriptions/sign-up?planId=${plan.id}`}
-        />
+        <Button type="button" rounded="lg" link={`/subscriptions/sign-up?planId=${plan.id}`}>
+          Sign Up Now
+        </Button>
       </div>
     </div>
   )
