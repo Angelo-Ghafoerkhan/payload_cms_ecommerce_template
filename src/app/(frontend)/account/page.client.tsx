@@ -1,11 +1,12 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { clearCart } from '@/collections/Ecommerce/Carts/utils/cartFunctions'
 import SingleOrder from './_components/SingleOrder'
 import { Order, Subscription } from '@/payload-types'
 import SingleSubscription, { SubscriptionWithOrdersAndPlan } from './_components/SingleSubscription'
+import LoaderFullPage from '@/components/Loaders/LoaderFullPage'
 
 interface User {
   id: string
@@ -17,6 +18,14 @@ const TABS = {
   user: 'user',
   orders: 'orders',
   subscriptions: 'subscriptions',
+}
+
+const Page = () => {
+  return (
+    <Suspense fallback={<LoaderFullPage loading={true} />}>
+      <PageClient />
+    </Suspense>
+  )
 }
 
 const PageClient: React.FC = () => {
@@ -193,4 +202,4 @@ const PageClient: React.FC = () => {
   )
 }
 
-export default PageClient
+export default Page

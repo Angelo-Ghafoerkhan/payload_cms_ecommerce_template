@@ -6,6 +6,7 @@ import type { ContentBlock as ContentBlockProps } from '@/payload-types'
 
 import { CMSLink } from '../../components/Link'
 import RenderSingleBlocks from '@/blocks/RenderSingleBlocks'
+import type { IconGroupValue } from '@/fields/IconSelector/RenderIcon'
 
 export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
   const { columns } = props
@@ -24,6 +25,8 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
           columns.length > 0 &&
           columns.map((col, index) => {
             const { enableLink, link, richText, size, contentType, block } = col
+
+            const icon = link?.icon
 
             return (
               <div
@@ -44,7 +47,7 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
                   />
                 )}
 
-                {enableLink && <CMSLink {...link} />}
+                {enableLink && icon?.name && <CMSLink {...link} icon={icon as IconGroupValue} />}
               </div>
             )
           })}

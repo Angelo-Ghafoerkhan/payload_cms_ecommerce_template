@@ -1,13 +1,22 @@
 'use client'
 
 import Button from '@/components/Button'
+import LoaderFullPage from '@/components/Loaders/LoaderFullPage'
 import LoginSignUp from '@/components/LoginSignUp'
 import { Plan } from '@/payload-types'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { toast } from 'react-toast'
 
-const PageContent = () => {
+const Page = () => {
+  return (
+    <Suspense fallback={<LoaderFullPage loading={true} />}>
+      <PageClient />
+    </Suspense>
+  )
+}
+
+const PageClient = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
@@ -121,4 +130,4 @@ const PageContent = () => {
   )
 }
 
-export default PageContent
+export default Page

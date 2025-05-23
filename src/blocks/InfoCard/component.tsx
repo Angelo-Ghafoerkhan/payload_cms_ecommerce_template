@@ -3,9 +3,7 @@ import RichText from '@/components/RichText'
 import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import dynamic from 'next/dynamic'
 
-const RenderIcon = dynamic(() => import('@/fields/IconSelector/RenderIcon'), {
-  ssr: false,
-})
+const RenderIcon = dynamic(() => import('@/fields/IconSelector/RenderIcon'))
 
 export interface InfoCardBlockProps {
   icon: any

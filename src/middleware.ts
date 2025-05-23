@@ -8,10 +8,12 @@ async function getSettings() {
   const timeout = setTimeout(() => controller.abort(), 500)
 
   try {
+    console.log('Fetching global settings...')
     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/globals/settings?depth=2`, {
       signal: controller.signal,
       cache: 'no-store',
     })
+    console.log('Fetched global settings')
     if (!res.ok) throw new Error(`Status ${res.status}`)
     return (await res.json()) as { enableMaintenanceMode: boolean; maintenancePassword: string }
   } catch (err) {

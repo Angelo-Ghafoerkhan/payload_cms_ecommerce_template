@@ -12,7 +12,7 @@ import RenderSocials from '@/Globals/Settings/components/RenderSocials'
 import clsx from 'clsx'
 
 const renderRow = (
-  row: Extract<Footer['columns'][number]['rows'], Array<any>>[number],
+  row: { rowType: 'text'; text: any } | { rowType: 'Logo' } | { rowType: 'location' },
   i: number,
   settings: Setting,
 ) => {
@@ -60,7 +60,17 @@ const renderColumn = (
     case 'rows':
       return (
         <div key={index} className="flex flex-col gap-4">
-          {column.rows?.map((row, i) => renderRow(row, i, settings))}
+          {column.rows
+            ?.filter(
+              (
+                row,
+              ): row is
+                | { rowType: 'text'; text: any }
+                | { rowType: 'Logo' }
+                | { rowType: 'location' } =>
+                row?.rowType === 'text' || row?.rowType === 'Logo' || row?.rowType === 'location',
+            )
+            .map((row, i) => renderRow(row, i, settings))}
         </div>
       )
     case 'logo':
@@ -134,7 +144,10 @@ const renderColumn = (
 
 export async function Footer() {
   const footerData: Footer = await getCachedGlobal('footer', 1)()
-  const settings: Setting = await getCachedGlobal('settings', 1)()
+
+  console.log('Getting global settings')
+  const settings = await getCachedGlobal('settings', 1)()
+  console.log('Got settings')
 
   const columns = footerData?.columns || []
 

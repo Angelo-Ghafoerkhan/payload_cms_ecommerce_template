@@ -3,6 +3,7 @@
 import React, { lazy, Suspense, useEffect, useState, type CSSProperties } from 'react'
 import clsx from 'clsx'
 import dynamicIconImports from 'lucide-react/dynamicIconImports'
+import { Media } from '@/payload-types'
 
 /* -------------------------------------------------------------------------- */
 /*  Types                                                                     */
@@ -11,11 +12,11 @@ import dynamicIconImports from 'lucide-react/dynamicIconImports'
 type Preset = 'primary' | 'secondary' | 'tertiary'
 
 export type IconGroupValue = {
-  source: 'lucide' | 'upload'
-  name?: keyof typeof dynamicIconImports // lucide
-  upload?: { url?: string } | string // upload
-  color?: string // preset or #hex
-  size?: number // px
+  source?: 'lucide' | 'upload' | null
+  name?: string | null
+  upload?: number | Media | null | undefined
+  color?: string | null
+  size?: number | null
 }
 
 /* -------------------------------------------------------------------------- */
@@ -49,7 +50,9 @@ const RenderIcon: React.FC<RenderIconProps> = ({ icon, className }) => {
     source === 'upload'
       ? typeof icon?.upload === 'string'
         ? icon.upload
-        : icon?.upload?.url
+        : typeof icon?.upload === 'object' && icon?.upload !== null && 'url' in icon.upload
+          ? (icon.upload as Media).url
+          : undefined
       : undefined
 
   // Fetch SVG markup for uploaded icons
@@ -78,13 +81,13 @@ const RenderIcon: React.FC<RenderIconProps> = ({ icon, className }) => {
   /* ------------------------------------------------------------------ */
 
   /** Tailwind utility: stroke-* for Lucide, fill-* for upload */
-  const twColour = isPreset(color)
+  const twColour = isPreset(color ?? undefined)
     ? `${source === 'upload' ? 'fill' : 'stroke'}-${color}`
     : undefined
 
   /** Inline style for hex values */
   const inlineColour: CSSProperties | undefined =
-    !isPreset(color) && color?.startsWith('#')
+    !isPreset(color ?? undefined) && color?.startsWith('#')
       ? source === 'upload'
         ? { fill: color }
         : { stroke: color }
@@ -94,7 +97,7 @@ const RenderIcon: React.FC<RenderIconProps> = ({ icon, className }) => {
   /*  Lucide                                                             */
   /* ------------------------------------------------------------------ */
   if (source === 'lucide' && icon.name) {
-    const LucideIcon = lazy(dynamicIconImports[icon.name])
+    const LucideIcon = lazy(dynamicIconImports[icon.name as keyof typeof dynamicIconImports])
 
     return (
       <Suspense fallback={fallback}>
