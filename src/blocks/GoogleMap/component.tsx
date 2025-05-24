@@ -1,5 +1,6 @@
 'use client'
 
+import AnimationType from '@/fields/Animation/types'
 import clsx from 'clsx'
 import React from 'react'
 
@@ -7,6 +8,7 @@ export interface GoogleMapBlockProps {
   mapUrl: string
   height?: number
   enableContainer?: boolean
+  animation?: AnimationType
 }
 
 export const GoogleMap: React.FC<GoogleMapBlockProps> = ({

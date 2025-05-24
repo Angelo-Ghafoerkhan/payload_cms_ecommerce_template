@@ -35,6 +35,7 @@ import StaffImageSpielBlock, {
 import { GoogleMap, GoogleMapBlockProps } from '@/blocks/GoogleMap/component'
 import { FormBlock, FormBlockType } from '@/blocks/Form/Component'
 import ContactSection from '@/blocks/ContactSection/Component'
+import AnimatedBlockWrapper from '@/fields/Animation/AnimatedBlockWrapper'
 
 type NodeTypes =
   | DefaultNodeTypes
@@ -62,48 +63,68 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
   blocks: {
     banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
     mediaBlock: ({ node }) => (
-      <MediaBlock
-        className="col-start-1 col-span-3"
-        imgClassName="m-0"
-        {...node.fields}
-        captionClassName="mx-auto max-w-[48rem]"
-        enableGutter={false}
-        disableInnerContainer={true}
-      />
+      <AnimatedBlockWrapper animation={node.fields.animation as any}>
+        <MediaBlock
+          className="col-start-1 col-span-3"
+          imgClassName="m-0"
+          {...node.fields}
+          captionClassName="mx-auto max-w-[48rem]"
+          enableGutter={false}
+          disableInnerContainer={true}
+        />
+      </AnimatedBlockWrapper>
     ),
     code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
 
     cta: ({ node }) => <CallToActionBlock {...node.fields} />,
 
     formBlock: ({ node }: { node: SerializedBlockNode<FormBlockType> }) => (
-      <FormBlock {...node.fields} />
+      <AnimatedBlockWrapper animation={node.fields.animation as any}>
+        <FormBlock {...node.fields} />
+      </AnimatedBlockWrapper>
     ),
 
     googleMap: ({ node }: { node: SerializedBlockNode<GoogleMapBlockProps> }) => (
-      <GoogleMap {...node.fields} enableContainer={false} />
+      <AnimatedBlockWrapper animation={node.fields.animation as any}>
+        <GoogleMap {...node.fields} enableContainer={false} />
+      </AnimatedBlockWrapper>
     ),
 
     infoCardBlock: ({ node }: { node: SerializedBlockNode<InfoCardBlockProps> }) => (
-      <InfoCardBlock {...node.fields} />
+      <AnimatedBlockWrapper animation={node.fields.animation as any}>
+        <InfoCardBlock {...node.fields} />
+      </AnimatedBlockWrapper>
     ),
     imageLinkBlock: ({ node }: { node: SerializedBlockNode<ImageLinkBlockProps> }) => (
-      <ImageLinkBlock {...node.fields} />
+      <AnimatedBlockWrapper animation={node.fields.animation as any}>
+        <ImageLinkBlock {...node.fields} />
+      </AnimatedBlockWrapper>
     ),
     imageWithTextOverlayBlock: ({
       node,
     }: {
       node: SerializedBlockNode<ImageWithTextOverlayBlockProps>
-    }) => <ImageWithTextOverlayBlock {...node.fields} />,
+    }) => (
+      <AnimatedBlockWrapper animation={node.fields.animation as any}>
+        <ImageWithTextOverlayBlock {...node.fields} />
+      </AnimatedBlockWrapper>
+    ),
 
     staffImageSpielBlock: ({ node }: { node: SerializedBlockNode<StaffImageSpielBlockProps> }) => (
-      <StaffImageSpielBlock {...node.fields} />
+      <AnimatedBlockWrapper animation={node.fields.animation as any}>
+        <StaffImageSpielBlock {...node.fields} />
+      </AnimatedBlockWrapper>
     ),
 
     subscriptionPlanBlock: ({
       node,
     }: {
       node: SerializedBlockNode<SubscriptionPlanBlockProps>
-    }) => <SubscriptionPlanBlock {...node.fields} />,
+    }) => (
+      <AnimatedBlockWrapper animation={node.fields.animation as any}>
+        <SubscriptionPlanBlock {...node.fields} />
+      </AnimatedBlockWrapper>
+    ),
   },
 })
 

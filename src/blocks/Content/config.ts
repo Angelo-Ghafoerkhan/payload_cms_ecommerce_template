@@ -20,6 +20,7 @@ import { InfoCardBlock } from '../InfoCard/config'
 import { StaffImageSpielBlock } from '../StaffImageSpielBlock/config'
 import { SubscriptionPlanBlock } from '../SubscriptionPlanBlock/config'
 import { MediaBlock } from '../MediaBlock/config'
+import { animationField } from '@/fields/Animation/field'
 
 const columnFields: Field[] = [
   {
@@ -128,12 +129,26 @@ export const Content: Block = {
   interfaceName: 'ContentBlock',
   fields: [
     {
-      name: 'columns',
-      type: 'array',
-      admin: {
-        initCollapsed: true,
-      },
-      fields: columnFields,
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Content',
+          fields: [
+            {
+              name: 'columns',
+              type: 'array',
+              admin: {
+                initCollapsed: true,
+              },
+              fields: columnFields,
+            },
+          ],
+        },
+        {
+          label: 'Animation',
+          fields: [animationField],
+        },
+      ],
     },
   ],
 }

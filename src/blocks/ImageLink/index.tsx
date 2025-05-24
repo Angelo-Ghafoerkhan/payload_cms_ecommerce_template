@@ -6,11 +6,13 @@ import Image from 'next/image'
 import type { Media } from '@/payload-types'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import ArrowRight from './components/ArrowRight'
+import AnimationType from '@/fields/Animation/types'
 
 export interface ImageLinkBlockProps {
   image: Media
   text: SerializedEditorState
-  link: Parameters<typeof CMSLink>[0] // reuse the CMSLink prop type
+  link: Parameters<typeof CMSLink>[0]
+  animation?: AnimationType
 }
 
 const ImageLinkBlock: React.FC<ImageLinkBlockProps> = ({ image, text, link }) => {

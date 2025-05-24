@@ -1,3 +1,4 @@
+import { animationField } from '@/fields/Animation/field'
 import type { Block } from 'payload'
 
 export const SubscriptionPlanBlock: Block = {
@@ -5,9 +6,23 @@ export const SubscriptionPlanBlock: Block = {
   interfaceName: 'SubscriptionPlanBlock',
   fields: [
     {
-      name: 'subscriptionPlan',
-      type: 'relationship',
-      relationTo: 'plans',
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Content',
+          fields: [
+            {
+              name: 'subscriptionPlan',
+              type: 'relationship',
+              relationTo: 'plans',
+            },
+          ],
+        },
+        {
+          label: 'Animation',
+          fields: [animationField],
+        },
+      ],
     },
   ],
 }

@@ -1,5 +1,6 @@
 // import RenderIcon from '@/fields/IconSelector/RenderIcon'
 import RichText from '@/components/RichText'
+import AnimationType from '@/fields/Animation/types'
 import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import dynamic from 'next/dynamic'
 
@@ -9,6 +10,7 @@ export interface InfoCardBlockProps {
   icon: any
   title: string
   text: SerializedEditorState
+  animation?: AnimationType
 }
 
 const InfoCardBlock: React.FC<InfoCardBlockProps> = ({ icon, title, text }) => {

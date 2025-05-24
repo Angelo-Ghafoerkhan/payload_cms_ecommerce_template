@@ -375,6 +375,14 @@ export interface Page {
     | ContentBlock
     | {
         faqs: number | Faq;
+        animation?: {
+          enabled?: boolean | null;
+          trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+          type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
+          threshold?: number | null;
+          duration?: number | null;
+          delay?: number | null;
+        };
         id?: string | null;
         blockName?: string | null;
         blockType: 'faqBlock';
@@ -382,6 +390,14 @@ export interface Page {
     | {
         title?: string | null;
         gallery: number | Gallery;
+        animation?: {
+          enabled?: boolean | null;
+          trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+          type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
+          threshold?: number | null;
+          duration?: number | null;
+          delay?: number | null;
+        };
         id?: string | null;
         blockName?: string | null;
         blockType: 'gallery';
@@ -413,6 +429,14 @@ export interface Page {
               id?: string | null;
             }[]
           | null;
+        animation?: {
+          enabled?: boolean | null;
+          trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+          type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
+          threshold?: number | null;
+          duration?: number | null;
+          delay?: number | null;
+        };
         id?: string | null;
         blockName?: string | null;
         blockType: 'stepItemGrid';
@@ -429,6 +453,14 @@ export interface Page {
                     | ContentBlock
                     | {
                         faqs: number | Faq;
+                        animation?: {
+                          enabled?: boolean | null;
+                          trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+                          type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
+                          threshold?: number | null;
+                          duration?: number | null;
+                          delay?: number | null;
+                        };
                         id?: string | null;
                         blockName?: string | null;
                         blockType: 'faqBlock';
@@ -436,6 +468,14 @@ export interface Page {
                     | {
                         title?: string | null;
                         gallery: number | Gallery;
+                        animation?: {
+                          enabled?: boolean | null;
+                          trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+                          type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
+                          threshold?: number | null;
+                          duration?: number | null;
+                          delay?: number | null;
+                        };
                         id?: string | null;
                         blockName?: string | null;
                         blockType: 'gallery';
@@ -464,6 +504,14 @@ export interface Page {
                               id?: string | null;
                             }[]
                           | null;
+                        animation?: {
+                          enabled?: boolean | null;
+                          trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+                          type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
+                          threshold?: number | null;
+                          duration?: number | null;
+                          delay?: number | null;
+                        };
                         id?: string | null;
                         blockName?: string | null;
                         blockType: 'stepItemGrid';
@@ -473,6 +521,14 @@ export interface Page {
               id?: string | null;
             }[]
           | null;
+        animation?: {
+          enabled?: boolean | null;
+          trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+          type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
+          threshold?: number | null;
+          duration?: number | null;
+          delay?: number | null;
+        };
         id?: string | null;
         blockName?: string | null;
         blockType: 'tabsBlock';
@@ -864,6 +920,14 @@ export interface ContentBlock {
         id?: string | null;
       }[]
     | null;
+  animation?: {
+    enabled?: boolean | null;
+    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
+    threshold?: number | null;
+    duration?: number | null;
+    delay?: number | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'content';
@@ -890,6 +954,14 @@ export interface FormBlock {
     };
     [k: string]: unknown;
   } | null;
+  animation?: {
+    enabled?: boolean | null;
+    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
+    threshold?: number | null;
+    duration?: number | null;
+    delay?: number | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'formBlock';
@@ -1077,6 +1149,14 @@ export interface GoogleMapBlock {
    */
   mapUrl: string;
   height?: number | null;
+  animation?: {
+    enabled?: boolean | null;
+    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
+    threshold?: number | null;
+    duration?: number | null;
+    delay?: number | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'googleMap';
@@ -1127,6 +1207,14 @@ export interface ImageLinkBlock {
      * Choose how the link should be rendered.
      */
     appearance?: ('default' | 'secondary' | 'dark' | 'outline') | null;
+  };
+  animation?: {
+    enabled?: boolean | null;
+    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
+    threshold?: number | null;
+    duration?: number | null;
+    delay?: number | null;
   };
   id?: string | null;
   blockName?: string | null;
@@ -1189,6 +1277,14 @@ export interface InfoCardBlock {
     };
     [k: string]: unknown;
   } | null;
+  animation?: {
+    enabled?: boolean | null;
+    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
+    threshold?: number | null;
+    duration?: number | null;
+    delay?: number | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'infoCardBlock';
@@ -1199,6 +1295,14 @@ export interface InfoCardBlock {
  */
 export interface MediaBlock {
   media: number | Media;
+  animation?: {
+    enabled?: boolean | null;
+    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
+    threshold?: number | null;
+    duration?: number | null;
+    delay?: number | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'mediaBlock';
@@ -1226,6 +1330,14 @@ export interface StaffImageSpielBlock {
     };
     [k: string]: unknown;
   };
+  animation?: {
+    enabled?: boolean | null;
+    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
+    threshold?: number | null;
+    duration?: number | null;
+    delay?: number | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'staffImageSpielBlock';
@@ -1236,6 +1348,14 @@ export interface StaffImageSpielBlock {
  */
 export interface SubscriptionPlanBlock {
   subscriptionPlan?: (number | null) | Plan;
+  animation?: {
+    enabled?: boolean | null;
+    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
+    threshold?: number | null;
+    duration?: number | null;
+    delay?: number | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'subscriptionPlanBlock';
@@ -1879,6 +1999,16 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               faqs?: T;
+              animation?:
+                | T
+                | {
+                    enabled?: T;
+                    trigger?: T;
+                    type?: T;
+                    threshold?: T;
+                    duration?: T;
+                    delay?: T;
+                  };
               id?: T;
               blockName?: T;
             };
@@ -1887,6 +2017,16 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               title?: T;
               gallery?: T;
+              animation?:
+                | T
+                | {
+                    enabled?: T;
+                    trigger?: T;
+                    type?: T;
+                    threshold?: T;
+                    duration?: T;
+                    delay?: T;
+                  };
               id?: T;
               blockName?: T;
             };
@@ -1904,6 +2044,16 @@ export interface PagesSelect<T extends boolean = true> {
                 | {
                     richText?: T;
                     id?: T;
+                  };
+              animation?:
+                | T
+                | {
+                    enabled?: T;
+                    trigger?: T;
+                    type?: T;
+                    threshold?: T;
+                    duration?: T;
+                    delay?: T;
                   };
               id?: T;
               blockName?: T;
@@ -1926,6 +2076,16 @@ export interface PagesSelect<T extends boolean = true> {
                             | T
                             | {
                                 faqs?: T;
+                                animation?:
+                                  | T
+                                  | {
+                                      enabled?: T;
+                                      trigger?: T;
+                                      type?: T;
+                                      threshold?: T;
+                                      duration?: T;
+                                      delay?: T;
+                                    };
                                 id?: T;
                                 blockName?: T;
                               };
@@ -1934,6 +2094,16 @@ export interface PagesSelect<T extends boolean = true> {
                             | {
                                 title?: T;
                                 gallery?: T;
+                                animation?:
+                                  | T
+                                  | {
+                                      enabled?: T;
+                                      trigger?: T;
+                                      type?: T;
+                                      threshold?: T;
+                                      duration?: T;
+                                      delay?: T;
+                                    };
                                 id?: T;
                                 blockName?: T;
                               };
@@ -1949,11 +2119,31 @@ export interface PagesSelect<T extends boolean = true> {
                                       richText?: T;
                                       id?: T;
                                     };
+                                animation?:
+                                  | T
+                                  | {
+                                      enabled?: T;
+                                      trigger?: T;
+                                      type?: T;
+                                      threshold?: T;
+                                      duration?: T;
+                                      delay?: T;
+                                    };
                                 id?: T;
                                 blockName?: T;
                               };
                         };
                     id?: T;
+                  };
+              animation?:
+                | T
+                | {
+                    enabled?: T;
+                    trigger?: T;
+                    type?: T;
+                    threshold?: T;
+                    duration?: T;
+                    delay?: T;
                   };
               id?: T;
               blockName?: T;
@@ -2062,6 +2252,16 @@ export interface ContentBlockSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  animation?:
+    | T
+    | {
+        enabled?: T;
+        trigger?: T;
+        type?: T;
+        threshold?: T;
+        duration?: T;
+        delay?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -2073,6 +2273,16 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  animation?:
+    | T
+    | {
+        enabled?: T;
+        trigger?: T;
+        type?: T;
+        threshold?: T;
+        duration?: T;
+        delay?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -2083,6 +2293,16 @@ export interface FormBlockSelect<T extends boolean = true> {
 export interface GoogleMapBlockSelect<T extends boolean = true> {
   mapUrl?: T;
   height?: T;
+  animation?:
+    | T
+    | {
+        enabled?: T;
+        trigger?: T;
+        type?: T;
+        threshold?: T;
+        duration?: T;
+        delay?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -2101,6 +2321,16 @@ export interface ImageLinkBlockSelect<T extends boolean = true> {
         reference?: T;
         url?: T;
         appearance?: T;
+      };
+  animation?:
+    | T
+    | {
+        enabled?: T;
+        trigger?: T;
+        type?: T;
+        threshold?: T;
+        duration?: T;
+        delay?: T;
       };
   id?: T;
   blockName?: T;
@@ -2137,6 +2367,16 @@ export interface InfoCardBlockSelect<T extends boolean = true> {
       };
   title?: T;
   text?: T;
+  animation?:
+    | T
+    | {
+        enabled?: T;
+        trigger?: T;
+        type?: T;
+        threshold?: T;
+        duration?: T;
+        delay?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -2146,6 +2386,16 @@ export interface InfoCardBlockSelect<T extends boolean = true> {
  */
 export interface MediaBlockSelect<T extends boolean = true> {
   media?: T;
+  animation?:
+    | T
+    | {
+        enabled?: T;
+        trigger?: T;
+        type?: T;
+        threshold?: T;
+        duration?: T;
+        delay?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -2158,6 +2408,16 @@ export interface StaffImageSpielBlockSelect<T extends boolean = true> {
   jobTitle?: T;
   image?: T;
   spiel?: T;
+  animation?:
+    | T
+    | {
+        enabled?: T;
+        trigger?: T;
+        type?: T;
+        threshold?: T;
+        duration?: T;
+        delay?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -2167,6 +2427,16 @@ export interface StaffImageSpielBlockSelect<T extends boolean = true> {
  */
 export interface SubscriptionPlanBlockSelect<T extends boolean = true> {
   subscriptionPlan?: T;
+  animation?:
+    | T
+    | {
+        enabled?: T;
+        trigger?: T;
+        type?: T;
+        threshold?: T;
+        duration?: T;
+        delay?: T;
+      };
   id?: T;
   blockName?: T;
 }

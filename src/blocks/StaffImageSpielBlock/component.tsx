@@ -1,3 +1,4 @@
+import AnimationType from '@/fields/Animation/types'
 import { Media } from '@/payload-types'
 import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { RichText } from '@payloadcms/richtext-lexical/react'
@@ -8,6 +9,7 @@ export interface StaffImageSpielBlockProps {
   jobTitle: string
   image: Media
   spiel: SerializedEditorState
+  animation?: AnimationType
 }
 
 const StaffImageSpielBlock: React.FC<StaffImageSpielBlockProps> = ({

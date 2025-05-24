@@ -5,9 +5,11 @@ import { Plan } from '@/payload-types'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { useEffect, useState } from 'react'
 import ItemLoaderShimmer from '@/components/Loaders/ItemLoaderShimmer'
+import AnimationType from '@/fields/Animation/types'
 
 export interface SubscriptionPlanBlockProps {
   subscriptionPlan: Plan | string
+  animation: AnimationType
 }
 
 const SubscriptionPlanBlock: React.FC<SubscriptionPlanBlockProps> = ({ subscriptionPlan }) => {

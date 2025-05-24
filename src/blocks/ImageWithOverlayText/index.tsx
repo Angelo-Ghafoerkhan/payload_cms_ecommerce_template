@@ -1,4 +1,5 @@
 import RichText from '@/components/RichText'
+import AnimationType from '@/fields/Animation/types'
 import { Media } from '@/payload-types'
 import { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import Image from 'next/image'
@@ -6,6 +7,7 @@ import Image from 'next/image'
 export type ImageWithTextOverlayBlockProps = {
   image: Media
   text: SerializedEditorState
+  animation?: AnimationType
 }
 
 const ImageWithTextOverlayBlock: React.FC<ImageWithTextOverlayBlockProps> = ({ image, text }) => {

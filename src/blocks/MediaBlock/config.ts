@@ -1,3 +1,4 @@
+import { animationField } from '@/fields/Animation/field'
 import type { Block } from 'payload'
 
 export const MediaBlock: Block = {
@@ -5,10 +6,24 @@ export const MediaBlock: Block = {
   interfaceName: 'MediaBlock',
   fields: [
     {
-      name: 'media',
-      type: 'upload',
-      relationTo: 'media',
-      required: true,
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Content',
+          fields: [
+            {
+              name: 'media',
+              type: 'upload',
+              relationTo: 'media',
+              required: true,
+            },
+          ],
+        },
+        {
+          label: 'Animation',
+          fields: [animationField],
+        },
+      ],
     },
   ],
 }

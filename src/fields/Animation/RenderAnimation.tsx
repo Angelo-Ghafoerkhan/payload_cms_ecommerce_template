@@ -6,11 +6,12 @@ import { motion, useAnimation } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 
 export interface AnimationProps {
+  enabled?: boolean
   trigger: 'onLoad' | 'onScroll' | 'onHover'
   type: 'fade' | 'slideLeft' | 'slideRight' | 'zoom'
   duration: number
   delay: number
-  threshold?: number // new!
+  threshold?: number
   children: ReactNode
 }
 
@@ -51,6 +52,7 @@ export default function RenderAnimation({
 
   return (
     <motion.div
+      className="h-full"
       ref={ref}
       variants={variants[type]}
       {...motionProps}

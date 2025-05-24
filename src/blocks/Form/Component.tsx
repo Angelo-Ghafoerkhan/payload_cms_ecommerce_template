@@ -10,6 +10,7 @@ import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical
 
 import { fields } from './fields'
 import { getClientSideURL } from '@/utilities/getURL'
+import AnimationType from '@/fields/Animation/types'
 
 export type FormBlockType = {
   blockName?: string
@@ -17,6 +18,7 @@ export type FormBlockType = {
   enableIntro: boolean
   form: FormType
   introContent?: SerializedEditorState
+  animation?: AnimationType
 }
 
 export const FormBlock: React.FC<
