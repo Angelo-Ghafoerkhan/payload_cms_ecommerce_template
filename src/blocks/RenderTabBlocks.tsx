@@ -19,6 +19,7 @@ import RenderAnimation from '@/fields/Animation/RenderAnimation'
 import InfoCardBlock from './InfoCard/component'
 import StaffImageSpielBlock from './StaffImageSpielBlock/component'
 import { GoogleMap } from './GoogleMap/component'
+import ImageOverlayCTA from './ImageOverlayCTA'
 
 const blockComponents: Record<string, React.ComponentType<any>> = {
   // content: ContentBlock,
@@ -29,6 +30,7 @@ const blockComponents: Record<string, React.ComponentType<any>> = {
   googleMap: GoogleMap,
   imageLinkBlock: ImageLinkBlock,
   imageWithTextBlock: ImageWithTextBlock,
+  imageOverlayCTA: ImageOverlayCTA,
   infoCardBlock: InfoCardBlock,
   logoCarouselBlock: LogoCarouselBlock,
   mediaBlock: MediaBlock,

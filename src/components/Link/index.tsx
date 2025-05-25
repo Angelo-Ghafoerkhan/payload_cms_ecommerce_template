@@ -12,7 +12,7 @@ const RenderIcon = dynamic(() => import('@/fields/IconSelector/RenderIcon'), {
   ssr: false,
 })
 
-type CMSLinkType = {
+export type CMSLinkType = {
   appearance?: 'inline' | ButtonProps['variant']
   children?: React.ReactNode
   className?: string

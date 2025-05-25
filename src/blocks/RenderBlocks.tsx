@@ -20,6 +20,7 @@ import InfoCardBlock from './InfoCard/component'
 import StaffImageSpielBlock from './StaffImageSpielBlock/component'
 import { GoogleMap } from './GoogleMap/component'
 import clsx from 'clsx'
+import ImageOverlayCTA from './ImageOverlayCTA'
 
 const blockComponents: Record<string, React.ComponentType<any>> = {
   archive: ArchiveBlock,
@@ -32,6 +33,7 @@ const blockComponents: Record<string, React.ComponentType<any>> = {
   googleMap: GoogleMap,
   imageLinkBlock: ImageLinkBlock,
   imageWithTextBlock: ImageWithTextBlock,
+  imageOverlayCTA: ImageOverlayCTA,
   infoCardBlock: InfoCardBlock,
   logoCarouselBlock: LogoCarouselBlock,
   mediaBlock: MediaBlock,

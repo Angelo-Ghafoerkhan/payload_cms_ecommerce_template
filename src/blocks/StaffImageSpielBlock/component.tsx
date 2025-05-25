@@ -22,7 +22,7 @@ const StaffImageSpielBlock: React.FC<StaffImageSpielBlockProps> = ({
     <section className="flex items-center justify-center gap-4">
       <Image
         src={image.url as string}
-        alt={image.alt as string}
+        alt={image.alt ?? ''}
         width={200}
         height={200}
         className="rounded-xl m-0 object-cover h-full aspect-square shadow-uniform"

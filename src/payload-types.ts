@@ -403,6 +403,7 @@ export interface Page {
         blockType: 'gallery';
       }
     | GoogleMapBlock
+    | ImageOverlayCTA
     | ImageWithTextBlock
     | LogoCarousel
     | MediaBlock
@@ -1404,6 +1405,64 @@ export interface Plan {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageOverlayCTA".
+ */
+export interface ImageOverlayCTA {
+  backgroundImage: number | Media;
+  overlay: {
+    title: string;
+    image: number | Media;
+    text?: string | null;
+  };
+  link: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'product-categories';
+          value: number | ProductCategory;
+        } | null)
+      | ({
+          relationTo: 'products';
+          value: number | Product;
+        } | null);
+    url?: string | null;
+    label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'secondary' | 'dark' | 'outline') | null;
+    showIcon?: boolean | null;
+    icon?: {
+      source?: ('lucide' | 'upload') | null;
+      color?: string | null;
+      size?: number | null;
+      name?: string | null;
+      upload?: (number | null) | Media;
+    };
+  };
+  animation?: {
+    enabled?: boolean | null;
+    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
+    threshold?: number | null;
+    duration?: number | null;
+    delay?: number | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'imageOverlayCTA';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ImageWithTextBlock".
  */
 export interface ImageWithTextBlock {
@@ -2031,6 +2090,7 @@ export interface PagesSelect<T extends boolean = true> {
               blockName?: T;
             };
         googleMap?: T | GoogleMapBlockSelect<T>;
+        imageOverlayCTA?: T | ImageOverlayCTASelect<T>;
         imageWithTextBlock?: T | ImageWithTextBlockSelect<T>;
         logoCarouselBlock?: T | LogoCarouselSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
@@ -2427,6 +2487,52 @@ export interface StaffImageSpielBlockSelect<T extends boolean = true> {
  */
 export interface SubscriptionPlanBlockSelect<T extends boolean = true> {
   subscriptionPlan?: T;
+  animation?:
+    | T
+    | {
+        enabled?: T;
+        trigger?: T;
+        type?: T;
+        threshold?: T;
+        duration?: T;
+        delay?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageOverlayCTA_select".
+ */
+export interface ImageOverlayCTASelect<T extends boolean = true> {
+  backgroundImage?: T;
+  overlay?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        text?: T;
+      };
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+        showIcon?: T;
+        icon?:
+          | T
+          | {
+              source?: T;
+              color?: T;
+              size?: T;
+              name?: T;
+              upload?: T;
+            };
+      };
   animation?:
     | T
     | {

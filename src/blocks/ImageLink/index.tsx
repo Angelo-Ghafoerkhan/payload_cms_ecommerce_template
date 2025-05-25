@@ -25,7 +25,7 @@ const ImageLinkBlock: React.FC<ImageLinkBlockProps> = ({ image, text, link }) =>
       {/* background image */}
       <Image
         src={image.url as string}
-        alt={image.alt as string}
+        alt={image.alt ?? ''}
         fill
         priority
         className="object-cover m-0"

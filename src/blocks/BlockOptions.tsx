@@ -7,6 +7,7 @@ import { FormBlock } from './Form/config'
 import { Gallery } from './Gallery/config'
 import GoogleMapBlock from './GoogleMap/config'
 import { ImageLinkBlock } from './ImageLink/config'
+import { ImageOverlayCTA } from './ImageOverlayCTA/config'
 import ImageWithTextOverlayBlock from './ImageWithOverlayText'
 import { ImageWithTextBlock } from './ImageWithTextBlock/config'
 import { InfoCardBlock } from './InfoCard/config'
@@ -25,6 +26,7 @@ export const DefaultBlockOptions = [
   FAQBlock,
   Gallery,
   GoogleMapBlock,
+  ImageOverlayCTA,
   ImageWithTextBlock,
   LogoCarouselBlock,
   MediaBlock,
