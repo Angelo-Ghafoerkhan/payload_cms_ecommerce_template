@@ -105,7 +105,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, settings }) =>
           ? '-translate-y-[120%]'
           : 'translate-y-0',
         data.settings?.header?.sticky ? 'fixed' : 'absolute',
-        isScrolled && 'bg-black shadow-md bg-opacity-40', // Add background when scrolled
+        isScrolled && !data.settings?.header?.isHovering && 'bg-black shadow-md bg-opacity-40', // Add background when scrolled
         !isScrolled && 'bg-transparent', // Remove background when at the top
       )}
       {...(theme ? { 'data-theme': theme } : {})}
@@ -143,7 +143,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, settings }) =>
       <div
         className={clsx(
           'container mt-2',
-          data.settings?.header?.isHovering && 'bg-black/50 py-8 px-4 rounded-2xl',
+          data.settings?.header?.isHovering && 'bg-black/50 py-8 px-4 rounded-2xl mx-4 w-auto',
         )}
       >
         <div className="flex justify-between items-center gap-4">
