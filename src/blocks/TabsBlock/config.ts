@@ -9,6 +9,7 @@ import { ImageWithTextBlock } from '../ImageWithTextBlock/config'
 import { MediaBlock } from '../MediaBlock/config'
 import { StepItemGridBlock } from '../StepItemGrid/config'
 import { animationField } from '@/fields/Animation/field'
+import { link } from '@/fields/link'
 
 export const TabsBlock: Block = {
   slug: 'tabsBlock',
@@ -50,6 +51,15 @@ export const TabsBlock: Block = {
               fields: [
                 { name: 'title', type: 'text', label: 'Title', required: true },
                 {
+                  name: 'type',
+                  type: 'select',
+                  options: [
+                    { value: 'content', label: 'Content' },
+                    { value: 'link', label: 'Link' },
+                  ],
+                  defaultValue: 'content',
+                },
+                {
                   name: 'content',
                   type: 'blocks',
                   label: 'Content',
@@ -63,7 +73,16 @@ export const TabsBlock: Block = {
                     FormBlock,
                     StepItemGridBlock,
                   ],
+                  admin: {
+                    condition: (data, siblingData) => siblingData.type === 'content',
+                  },
                 },
+                link({
+                  disableLabel: true,
+                  disableIcon: true,
+                  appearances: ['default'],
+                  condition: (data, siblingData) => siblingData.type === 'link',
+                }),
               ],
             },
           ],

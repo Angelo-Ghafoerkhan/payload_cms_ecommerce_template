@@ -4,12 +4,32 @@
 import React from 'react'
 import type { Block } from 'payload'
 import TabButton from './components/TabButton'
-import dynamic from 'next/dynamic'
 import RenderTabBlocks from '../RenderTabBlocks'
 
 interface TabsBlockProps {
   tabPosition: 'left' | 'middle' | 'right'
-  tabs: { title: string; content: Block[] }[]
+  tabs: {
+    title: string
+    type: 'content' | 'link'
+    content?: Block[]
+    link?:
+      | {
+          type: 'custom'
+          url?: string | null
+          newTab?: boolean | null
+        }
+      | {
+          type: 'reference'
+          newTab?: boolean | null
+          reference?: {
+            relationTo: 'pages' | 'posts' | 'products' | 'product-categories'
+            value: {
+              slug: string
+              [key: string]: any
+            }
+          }
+        }
+  }[]
   initialTab?: number
 }
 
@@ -30,20 +50,32 @@ export default function TabsBlockClient({
   return (
     <div className="w-full container gap-8">
       <div className={`flex ${positionMap[tabPosition]} space-x-4 border-b pb-4`}>
-        {tabs.map((tab, idx) => (
-          <TabButton
-            key={idx}
-            title={tab.title}
-            isActive={idx === activeTab}
-            onClick={() => setActiveTab(idx)}
-          />
-        ))}
+        {tabs.map((tab, idx) => {
+          console.log('Tab:', tab, 'Index:', idx, 'Active Tab:', activeTab)
+          return (
+            <TabButton
+              key={idx}
+              title={tab.title}
+              isActive={idx === activeTab}
+              onClick={() => {
+                if (tab.type === 'content') {
+                  setActiveTab(idx)
+                }
+              }}
+              type={tab.type}
+              link={tab.type === 'link' ? tab.link : undefined}
+            />
+          )
+        })}
       </div>
-      <div className="-mt-16">
-        {/* Skip rendering tabsBlock inside itself */}
-        {/* @ts-expect-error Server Component */}
-        <RenderTabBlocks blocks={tabs[activeTab]?.content} />
-      </div>
+
+      {/* Render only if active tab is 'content' */}
+      {tabs[activeTab]?.type === 'content' && (
+        <div className="-mt-16">
+          {/* @ts-expect-error Server Component */}
+          <RenderTabBlocks blocks={tabs[activeTab]?.content || []} />
+        </div>
+      )}
     </div>
   )
 }

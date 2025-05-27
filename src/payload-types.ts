@@ -448,6 +448,7 @@ export interface Page {
         tabs?:
           | {
               title: string;
+              type?: ('content' | 'link') | null;
               content?:
                 | (
                     | CallToActionBlock
@@ -519,6 +520,32 @@ export interface Page {
                       }
                   )[]
                 | null;
+              link?: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: number | Post;
+                    } | null)
+                  | ({
+                      relationTo: 'product-categories';
+                      value: number | ProductCategory;
+                    } | null)
+                  | ({
+                      relationTo: 'products';
+                      value: number | Product;
+                    } | null);
+                url?: string | null;
+                /**
+                 * Choose how the link should be rendered.
+                 */
+                appearance?: 'default' | null;
+              };
               id?: string | null;
             }[]
           | null;
@@ -2127,6 +2154,7 @@ export interface PagesSelect<T extends boolean = true> {
                 | T
                 | {
                     title?: T;
+                    type?: T;
                     content?:
                       | T
                       | {
@@ -2192,6 +2220,15 @@ export interface PagesSelect<T extends boolean = true> {
                                 id?: T;
                                 blockName?: T;
                               };
+                        };
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                          appearance?: T;
                         };
                     id?: T;
                   };
