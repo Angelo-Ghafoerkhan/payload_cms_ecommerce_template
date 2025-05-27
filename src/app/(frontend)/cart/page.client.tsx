@@ -185,7 +185,7 @@ const CartPage: React.FC<CartPageProps> = ({ className }) => {
       {cartItems.length > 0 && (
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
-            <table className="min-w-full bg-white">
+            <table className="min-w-full bg-card">
               <thead className="text-lg hidden md:contents">
                 <tr>
                   <th className="text-left py-2">Product</th>
@@ -287,7 +287,7 @@ const CartPage: React.FC<CartPageProps> = ({ className }) => {
             </table>
           </div>
           <div className="lg:col-span-1">
-            <div className="bg-gray-100 p-4 rounded-lg">
+            <div className="bg-card p-4 rounded-lg">
               <h2 className="font-bold text-2xl mb-4">Order Summary</h2>
               {discountAmount ? (
                 <>
