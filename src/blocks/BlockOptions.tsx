@@ -44,6 +44,7 @@ export const SingleBlockOptions = [
   ImageLinkBlock,
   ImageWithTextOverlayBlock,
   InfoCardBlock,
+  MediaBlock,
   StaffImageSpielBlock,
   SubscriptionPlanBlock,
 ]

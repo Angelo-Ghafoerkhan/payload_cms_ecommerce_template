@@ -1,6 +1,7 @@
 import { animationField } from '@/fields/Animation/field'
 
 import {
+  BlocksFeature,
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
@@ -9,6 +10,7 @@ import {
   UnorderedListFeature,
 } from '@payloadcms/richtext-lexical'
 import { Block } from 'payload'
+import { SingleBlockOptions } from '../BlockOptions'
 
 export const ImageWithTextBlock: Block = {
   slug: 'imageWithTextBlock',
@@ -71,6 +73,12 @@ export const ImageWithTextBlock: Block = {
                   return [
                     ...rootFeatures,
                     HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
+                    BlocksFeature({
+                      blocks: SingleBlockOptions.filter(
+                        (block): block is Block =>
+                          'fields' in block && 'slug' in block && block.slug !== 'contactSection',
+                      ),
+                    }),
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
                     OrderedListFeature(),

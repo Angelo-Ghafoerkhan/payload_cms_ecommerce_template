@@ -28,7 +28,9 @@ const ImageOverlayCTA: React.FC<ImageOverlayCTAProps> = ({ backgroundImage, over
 
       <div className="relative z-10 bg-black bg-opacity-20 w-full h-full flex items-center justify-center flex-col">
         <div className="bg-primary-foreground rounded-2xl text-center flex flex-col gap-4 items-center justify-center p-6 max-w-[750px]">
-          <h2 className="text-3xl max-w-[400px]">{overlay.title}</h2>
+          <div className="prose">
+            <h2 className="text-3xl max-w-[400px]">{overlay.title}</h2>
+          </div>
           <div className="relative">
             <Image
               src={overlay.image.url as string}
@@ -41,7 +43,9 @@ const ImageOverlayCTA: React.FC<ImageOverlayCTAProps> = ({ backgroundImage, over
               <CMSLink {...link} />
             </div>
           </div>
-          <p className="max-w-[500px]">{overlay.text}</p>
+          <div className="prose">
+            <p className="max-w-[500px]">{overlay.text}</p>
+          </div>
         </div>
       </div>
     </div>

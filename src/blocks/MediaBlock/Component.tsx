@@ -16,6 +16,8 @@ type Props = MediaBlockProps & {
   imgClassName?: string
   staticImage?: StaticImageData
   disableInnerContainer?: boolean
+  containImage?: boolean
+  maxHeight?: string
 }
 
 export const MediaBlock: React.FC<Props> = (props) => {
