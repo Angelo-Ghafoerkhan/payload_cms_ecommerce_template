@@ -1,5 +1,6 @@
 import { ownerOrRelevant } from '@/access/ownerOrRelevant'
 import type { CollectionConfig } from 'payload'
+import sendTrackingEmail from '@/emails/sendTrackingEmail'
 
 export const Orders: CollectionConfig = {
   slug: 'orders',
@@ -8,6 +9,24 @@ export const Orders: CollectionConfig = {
   },
   access: {
     read: ownerOrRelevant,
+  },
+  hooks: {
+    afterChange: [
+      async ({ doc, previousDoc, operation, req }) => {
+        if (operation !== 'update') return
+
+        const oldUrl = previousDoc?.shipping?.trackingUrl
+        const newUrl = doc.shipping?.trackingUrl
+
+        if (oldUrl !== newUrl && newUrl) {
+          const userEmail = doc.user?.email || doc.email
+
+          if (userEmail) {
+            await sendTrackingEmail(userEmail, newUrl, doc.orderRef)
+          }
+        }
+      },
+    ],
   },
   fields: [
     {
@@ -158,6 +177,16 @@ export const Orders: CollectionConfig = {
               type: 'number',
             },
           ],
+        },
+      ],
+    },
+    {
+      name: 'shipping',
+      type: 'group',
+      fields: [
+        {
+          name: 'trackingUrl',
+          type: 'text',
         },
       ],
     },

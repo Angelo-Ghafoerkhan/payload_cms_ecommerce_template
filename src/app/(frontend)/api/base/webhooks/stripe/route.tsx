@@ -4,8 +4,8 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { headers } from 'next/headers'
 import Stripe from 'stripe'
-import nodemailer from 'nodemailer'
 import { updateProductStock } from '@/collections/Ecommerce/Carts/utils/cartFunctions'
+import sendOrderEmail from '@/emails/sendOrderEmail'
 
 // Decode cartSummary from metadata.
 function decodeCartSummary(cartSummaryRaw: string) {
@@ -37,86 +37,10 @@ function decodeCartSummary(cartSummaryRaw: string) {
     .filter((item) => item !== null)
 }
 
-// Configure nodemailer transporter.
-const smtpHost = process.env.SMTP_HOST
-const smtpPort = process.env.SMTP_PORT
-const smtpUser = process.env.SMTP_USER
-const smtpPass = process.env.SMTP_PASS
-
-const transporter = nodemailer.createTransport({
-  host: smtpHost,
-  port: Number(smtpPort),
-  secure: true, // true for port 465; false for other ports
-  auth: {
-    user: smtpUser,
-    pass: smtpPass,
-  },
-} as nodemailer.TransportOptions)
-
 export const dynamic = 'force-dynamic'
 
 // Your webhook secret key.
 const endpointSecret: string = process.env.STRIPE_WEBHOOKS_ENDPOINT_SECRET as string
-
-/**
- * Sends an order confirmation email.
- * @param toEmail - The recipient email address.
- * @param orderType - Either 'subscription' or 'order'.
- */
-async function sendOrderEmail(toEmail: string, orderType: 'subscription' | 'order') {
-  const websiteUrl = process.env.NEXT_PUBLIC_WEBSITE_URL || 'http://localhost:3000'
-  const emailSettings = {
-    colors: {
-      primary: '#f1c204',
-      secondary: '#b7860b',
-      tertiary: '#003366',
-      textPrimary: '#222222',
-      textSecondary: '#333333',
-    },
-  }
-  const linkUrl =
-    orderType === 'subscription'
-      ? `${websiteUrl}/account?tab=subscriptions`
-      : `${websiteUrl}/account/orders`
-  const htmlEmail = `
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-family: Arial, sans-serif;">
-      <tr>
-        <td align="center" style="padding: 20px;">
-          <img src="${websiteUrl}/logo.png" alt="Company Logo" style="max-width: 250px; width: 100%; height: auto;" />
-        </td>
-      </tr>
-      <tr>
-        <td align="center" style="padding: 20px;">
-          <h1 style="font-size: 24px; color: ${emailSettings.colors.primary};">
-            ${orderType === 'subscription' ? 'Subscription Confirmed' : 'Order Confirmation'}
-          </h1>
-          <p style="font-size: 16px; color: ${emailSettings.colors.textSecondary};">
-            Thank you for your ${orderType === 'subscription' ? 'subscription' : 'order'}!
-            ${
-              orderType === 'subscription'
-                ? 'Your subscription is now active.'
-                : 'Your order has been received and is being processed.'
-            }
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td align="center" style="padding: 20px;">
-          <a href="${linkUrl}" style="background-color: ${emailSettings.colors.primary}; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
-            View ${orderType === 'subscription' ? 'Subscription' : 'Order'} Details
-          </a>
-        </td>
-      </tr>
-    </table>
-  `
-  await transporter.sendMail({
-    from: `"Your Company" <${smtpUser}>`,
-    to: toEmail,
-    subject:
-      orderType === 'subscription' ? 'Your Subscription is Active' : 'Your Order Confirmation',
-    html: htmlEmail,
-  })
-}
 
 export const POST = async (request: Request) => {
   const payloadInstance = await getPayload({ config })

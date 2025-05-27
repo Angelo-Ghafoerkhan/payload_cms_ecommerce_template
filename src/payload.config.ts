@@ -36,6 +36,16 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export const siteName = 'Verum Digital'
+export const websiteUrl = process.env.NEXT_PUBLIC_WEBSITE_URL || 'http://localhost:3000'
+export const emailSettings = {
+  colors: {
+    primary: '#f1c204',
+    secondary: '#b7860b',
+    tertiary: '#003366',
+    textPrimary: '#222222',
+    textSecondary: '#333333',
+  },
+}
 
 // const settings = await payload.getGlobal
 

@@ -3,6 +3,7 @@ import { authenticated } from '../../access/authenticated'
 import { admin } from '@/access/admin'
 import { getSettings } from '@/Globals/Settings/Component'
 import { Media } from '@/payload-types'
+import { emailSettings } from '@payload-config'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -24,22 +25,13 @@ export const Users: CollectionConfig = {
         const resetPasswordURL = `${process.env.NEXT_PUBLIC_SERVER_URL}/reset-password?token=${token}`
 
         const settings = await getSettings()
-        const emailSettings = {
-          colors: {
-            primary: '#f1c204',
-            secondary: '#b7860b',
-            tertiary: '#003366',
-            textPrimary: '#222222',
-            textSecondary: '#333333',
-          },
-        }
 
         return `
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-family: Arial, sans-serif;">
           <tr>
             <td align="center" style="padding: 20px;">
               <!-- Logo -->
-              <img src="${process.env.NEXT_PUBLIC_SERVER_URL}${(settings.logoDark as Media).url as string}" alt="Metabolize Logo"
+              <img src="${process.env.NEXT_PUBLIC_SERVER_URL}${(settings.logoDark as Media).url as string}" alt="Logo"
                 style="max-width: 250px; width: 100%; height: auto;" />
             </td>
           </tr>
