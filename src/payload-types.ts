@@ -1627,6 +1627,9 @@ export interface Order {
     discountCode?: string | null;
     discountAmount?: number | null;
   };
+  shipping?: {
+    trackingUrl?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -2907,6 +2910,11 @@ export interface OrdersSelect<T extends boolean = true> {
         discountCode?: T;
         discountAmount?: T;
       };
+  shipping?:
+    | T
+    | {
+        trackingUrl?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -3563,7 +3571,7 @@ export interface Footer {
         columnType?: ('rows' | 'logo' | 'menu' | 'cta') | null;
         rows?:
           | {
-              rowType?: ('text' | 'Logo' | 'location') | null;
+              rowType?: ('text' | 'Logo' | 'location' | 'contact' | 'openingHours') | null;
               text?: {
                 root: {
                   type: string;
@@ -3687,6 +3695,14 @@ export interface Footer {
 export interface Setting {
   id: number;
   businessAddress?: string | null;
+  openingHours?:
+    | {
+        day: 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+        openTime: string;
+        closeTime: string;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * This is the logo that will be used on dark backgrounds.
    */
@@ -3960,6 +3976,14 @@ export interface FooterSelect<T extends boolean = true> {
  */
 export interface SettingsSelect<T extends boolean = true> {
   businessAddress?: T;
+  openingHours?:
+    | T
+    | {
+        day?: T;
+        openTime?: T;
+        closeTime?: T;
+        id?: T;
+      };
   logoLight?: T;
   logoDark?: T;
   logoWidth?: T;

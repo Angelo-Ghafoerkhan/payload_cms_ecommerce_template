@@ -29,7 +29,7 @@ const AnimatedBlockWrapper: React.FC<AnimatedBlockWrapperProps> = ({
     )
   }
 
-  return <div className={clsx('my-16', className)}>{children}</div>
+  return <div className={clsx('', className)}>{children}</div>
 }
 
 export default AnimatedBlockWrapper

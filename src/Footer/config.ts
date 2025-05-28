@@ -116,6 +116,14 @@ export const Footer: GlobalConfig = {
                           label: 'Location',
                           value: 'location',
                         },
+                        {
+                          label: 'Contact',
+                          value: 'contact',
+                        },
+                        {
+                          label: 'Opening Hours',
+                          value: 'openingHours',
+                        },
                       ],
                     },
                     {

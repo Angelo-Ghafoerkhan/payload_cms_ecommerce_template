@@ -11,8 +11,69 @@ import Link from 'next/link'
 import RenderSocials from '@/Globals/Settings/components/RenderSocials'
 import clsx from 'clsx'
 
+export const ContactInfo: React.FC<{ settings: Setting }> = ({ settings }) => {
+  if (!settings) return null
+
+  return (
+    <div className="text-sm text-tertiary-foreground">
+      <h3 className="font-header text-lg text-primary-foreground mb-2">Contact</h3>
+      <div className="space-y-2">
+        {settings.email && (
+          <Link href={`mailto:${settings.email}`} className="block hover:text-secondary">
+            {settings.email}
+          </Link>
+        )}
+        {settings.phoneNumber && (
+          <Link href={`tel:${settings.phoneNumber}`} className="block hover:text-secondary">
+            {settings.phoneNumber}
+          </Link>
+        )}
+        <RenderSocials
+          socials={settings.socials}
+          className="fill-primary-foreground hover:fill-secondary"
+        />
+      </div>
+    </div>
+  )
+}
+
+const formatDay = (day: string) => {
+  switch (day) {
+    case 'mon-fri':
+      return 'Monday – Friday'
+    case 'weekend':
+      return 'Saturday & Sunday'
+    default:
+      return day.charAt(0).toUpperCase() + day.slice(1)
+  }
+}
+
+export const OpeningHours: React.FC<{ openingHours?: Setting['openingHours'] }> = ({
+  openingHours,
+}) => {
+  if (!openingHours || openingHours.length === 0) return null
+
+  return (
+    <div className="text-sm text-tertiary-foreground">
+      <h3 className="font-header text-lg text-primary-foreground mb-2">Opening Hours</h3>
+      <ul className="space-y-1">
+        {openingHours.map(({ day, openTime, closeTime }) => (
+          <li key={day}>
+            <span className="capitalize">{formatDay(day)}</span>: {openTime} – {closeTime}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
 const renderRow = (
-  row: { rowType: 'text'; text: any } | { rowType: 'Logo' } | { rowType: 'location' },
+  row:
+    | { rowType: 'text'; text: any }
+    | { rowType: 'Logo' }
+    | { rowType: 'location' }
+    | { rowType: 'openingHours' }
+    | { rowType: 'contact' },
   i: number,
   settings: Setting,
 ) => {
@@ -46,6 +107,12 @@ const renderRow = (
         </div>
       )
 
+    case 'openingHours':
+      return <OpeningHours key={i} openingHours={settings.openingHours} />
+
+    case 'contact':
+      return <ContactInfo key={i} settings={settings} />
+
     default:
       return null
   }
@@ -67,8 +134,14 @@ const renderColumn = (
               ): row is
                 | { rowType: 'text'; text: any }
                 | { rowType: 'Logo' }
-                | { rowType: 'location' } =>
-                row?.rowType === 'text' || row?.rowType === 'Logo' || row?.rowType === 'location',
+                | { rowType: 'location' }
+                | { rowType: 'openingHours' }
+                | { rowType: 'contact' } =>
+                row?.rowType === 'text' ||
+                row?.rowType === 'Logo' ||
+                row?.rowType === 'location' ||
+                row?.rowType === 'openingHours' ||
+                row?.rowType === 'contact',
             )
             .map((row, i) => renderRow(row, i, settings))}
         </div>
@@ -85,7 +158,7 @@ const renderColumn = (
       if (column?.menuType === 'custom') {
         return (
           <nav key={index}>
-            <h3 className="font-header text-primary">{column?.menuTitle}</h3>
+            <h3 className="font-header text-lg text-primary-foreground">{column?.menuTitle}</h3>
             <div className="flex flex-col">
               {column?.navItems?.map(({ link }, i) => {
                 return (
@@ -100,39 +173,13 @@ const renderColumn = (
           </nav>
         )
       } else if (column?.menuType === 'contact') {
-        return (
-          <div key={index}>
-            <h3 className="font-header text-primary">Contact</h3>
-            <div className="flex flex-col">
-              {settings.email && (
-                <Link
-                  href={`mailto:${settings.email}`}
-                  className="text-body text-tertiary-foreground hover:text-primary"
-                >
-                  {settings.email}
-                </Link>
-              )}
-              {settings.phoneNumber && (
-                <Link
-                  href={`tel:${settings.phoneNumber}`}
-                  className="text-body text-tertiary-foreground hover:text-primary"
-                >
-                  {settings.phoneNumber}
-                </Link>
-              )}
-              <RenderSocials
-                socials={settings.socials}
-                className="fill-primary-foreground hover:fill-primary"
-              />
-            </div>
-          </div>
-        )
+        return <ContactInfo key={index} settings={settings} />
       }
 
     case 'cta':
       return (
         <div key={index}>
-          <h3 className="font-header text-primary">{column.cta?.title}</h3>
+          <h3 className="font-header text-lg text-primary-foreground">{column.cta?.title}</h3>
           <p className="mb-2">{column.cta?.text}</p>
           <CMSLink {...column.cta?.button.link} appearance="default" />
         </div>

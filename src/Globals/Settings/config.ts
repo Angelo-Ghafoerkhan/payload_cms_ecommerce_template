@@ -21,6 +21,40 @@ export const Settings: GlobalConfig = {
               type: 'textarea',
               label: 'Address',
             },
+            {
+              name: 'openingHours',
+              type: 'array',
+              fields: [
+                {
+                  name: 'day',
+                  type: 'select',
+                  options: [
+                    { label: 'Mon – Fri', value: 'mon-fri' },
+                    { label: 'Weekend', value: 'weekend' },
+                    { label: 'Monday', value: 'monday' },
+                    { label: 'Tuesday', value: 'tuesday' },
+                    { label: 'Wednesday', value: 'wednesday' },
+                    { label: 'Thursday', value: 'thursday' },
+                    { label: 'Friday', value: 'friday' },
+                    { label: 'Saturday', value: 'saturday' },
+                    { label: 'Sunday', value: 'sunday' },
+                  ],
+                  required: true,
+                },
+                {
+                  name: 'openTime',
+                  type: 'text',
+                  required: true,
+                  label: 'Open Time (e.g., 09:00 AM)',
+                },
+                {
+                  name: 'closeTime',
+                  type: 'text',
+                  required: true,
+                  label: 'Close Time (e.g., 05:00 PM)',
+                },
+              ],
+            },
           ],
         },
         {
