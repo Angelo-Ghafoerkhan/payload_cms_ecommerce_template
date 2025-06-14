@@ -264,11 +264,7 @@ export const Header: GlobalConfig = {
         {
           name: 'callToAction',
           type: 'group',
-          fields: [
-            link({
-              appearances: false,
-            }),
-          ],
+          fields: [link({})],
           admin: {
             condition: (data, siblingData) => siblingData.showCTA,
           },

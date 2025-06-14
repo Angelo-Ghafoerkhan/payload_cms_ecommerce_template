@@ -21,6 +21,8 @@ import { StaffImageSpielBlock } from '../StaffImageSpielBlock/config'
 import { SubscriptionPlanBlock } from '../SubscriptionPlanBlock/config'
 import { MediaBlock } from '../MediaBlock/config'
 import { animationField } from '@/fields/Animation/field'
+import { SingleProduct } from '../SingleProduct/config'
+import { ReviewCard } from '../ReviewCard/config'
 
 const columnFields: Field[] = [
   {
@@ -100,8 +102,10 @@ const columnFields: Field[] = [
       ImageWithTextOverlayBlock,
       InfoCardBlock,
       MediaBlock,
+      ReviewCard,
       StaffImageSpielBlock,
       SubscriptionPlanBlock,
+      SingleProduct,
     ],
     admin: {
       condition: (_, siblingData) => {

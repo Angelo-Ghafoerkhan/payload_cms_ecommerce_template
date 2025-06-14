@@ -12,6 +12,8 @@ import InfoCardBlock from './InfoCard/component'
 import StaffImageSpielBlock from './StaffImageSpielBlock/component'
 import { GoogleMap } from './GoogleMap/component'
 import clsx from 'clsx'
+import SingleProduct from './SingleProduct/component'
+import ReviewCard from './ReviewCard/component'
 
 const blockComponents: Record<string, React.ComponentType<any>> = {
   contactSection: ContactSection,
@@ -21,6 +23,8 @@ const blockComponents: Record<string, React.ComponentType<any>> = {
   imageWithTextBlock: ImageWithTextBlock,
   infoCardBlock: InfoCardBlock,
   mediaBlock: MediaBlock,
+  reviewCard: ReviewCard,
+  singleProduct: SingleProduct,
   staffImageSpielBlock: StaffImageSpielBlock,
 }
 
@@ -62,7 +66,7 @@ export const RenderSingleBlocks: React.FC<RenderBlocksProps> = ({
 
         if (animation?.enabled) {
           return (
-            <div className={clsx(!excludeMargin && 'my-16')} key={idx}>
+            <div className={clsx('h-full', !excludeMargin && 'my-16')} key={idx}>
               <RenderAnimation
                 trigger={animation.trigger}
                 type={animation.type}
@@ -76,7 +80,7 @@ export const RenderSingleBlocks: React.FC<RenderBlocksProps> = ({
         }
 
         return (
-          <div className={clsx(!excludeMargin && 'my-16')} key={idx}>
+          <div className={clsx('h-full', !excludeMargin && 'my-16')} key={idx}>
             {content}
           </div>
         )

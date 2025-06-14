@@ -1,22 +1,27 @@
 'use client'
 
 import Button from '@/components/Button'
-import LoaderFullPage from '@/components/Loaders/LoaderFullPage'
 import LoginSignUp from '@/components/LoginSignUp'
 import { Plan } from '@/payload-types'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useEffect, useState } from 'react'
 import { toast } from 'react-toast'
+import Image from 'next/image'
+import { useHeaderTheme } from '@/providers/HeaderTheme'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import Input from '@/components/forms/react-hook-form/Input/Input'
+import UploadFile, { fileToBase64 } from '@/components/forms/react-hook-form/UploadFile'
+import LoaderFullPage from '@/components/Loaders/LoaderFullPage'
 
 const Page = () => {
   return (
     <Suspense fallback={<LoaderFullPage loading={true} />}>
-      <PageClient />
+      <PageContent />
     </Suspense>
   )
 }
 
-const PageClient = () => {
+const PageContent = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
@@ -24,11 +29,39 @@ const PageClient = () => {
   const [showLogin, setShowLogin] = useState(false)
   const [currentUser, setCurrentUser] = useState<any>(null)
   const [planData, setPlanData] = useState<Plan | undefined>(undefined)
+  const [submitting, setSubmitting] = useState(false) // Prevent multiple submissions
+  const [success, setSuccess] = useState(false)
+  const [error, setError] = useState(false)
 
-  // Get the planId from the query string. If not found, default to an empty string.
+  // Get the planId from the query string. If not found, default to empty string.
   const planId = searchParams.get('planId') || ''
 
-  // Check if user is logged in and store the user in state.
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+    watch,
+    control,
+  } = useForm<FieldValues>({
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      bodyWeight: '',
+      hoursPerWeekTraining: '',
+      jobTitle: '',
+      foodAllergies: '',
+      healthConditions: '',
+      goalWeight: '',
+      howOftenContact: '',
+      foodDislikes: '',
+      anyQuestions: '',
+      images: '',
+    },
+  })
+
+  // Check if the user is logged in.
   useEffect(() => {
     const checkIsLoggedIn = async () => {
       const response = await fetch('/api/users/me')
@@ -43,9 +76,13 @@ const PageClient = () => {
         setCurrentUser(null)
       }
     }
-
     checkIsLoggedIn()
   }, [pathname])
+
+  const { setHeaderTheme } = useHeaderTheme()
+  useEffect(() => {
+    setHeaderTheme('dark')
+  }, [setHeaderTheme])
 
   // Fetch plan details.
   useEffect(() => {
@@ -54,7 +91,6 @@ const PageClient = () => {
         router.back()
         return
       }
-
       try {
         const response = await fetch(`/api/plans/${planId}?depth=2`)
         if (!response.ok) {
@@ -67,7 +103,6 @@ const PageClient = () => {
         console.error('Error fetching plan:', error)
       }
     }
-
     fetchPlan()
   }, [planId, router])
 
@@ -96,7 +131,7 @@ const PageClient = () => {
       })
       const data = await res.json()
       if (res.ok && data.url) {
-        window.location.href = data.url // Redirect the customer to Stripe Checkout.
+        window.location.href = data.url // Redirect to Stripe Checkout.
       } else {
         console.error(data.message)
         toast.error(data.message || 'Failed to create subscription.')
@@ -107,27 +142,245 @@ const PageClient = () => {
     }
   }
 
-  return (
-    <div className="mt-48 mb-32 container">
-      {showLogin && <LoginSignUp />}
-      {!showLogin && (
-        <div>
-          <h1 className="font-header text-4xl">SELECTED PACKAGE</h1>
-          <h2 className="text-2xl font-header my-3">{formattedSubscriptionTerm}</h2>
-          <h3 className="text-xl mb-8">£{planData?.price} / month</h3>
-          <Button type="button" link="/pricing" rounded="lg">
-            Change Package
-          </Button>
+  // onSubmit handler.
+  const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
+    if (submitting) return // Prevent duplicate submission
+    setSubmitting(true)
 
-          <div className="mt-20">
-            <Button type="button" onClick={createSubscription} rounded="lg">
-              Proceed To Payment Setup
-            </Button>
+    let imagesBase64: { name: string; data: string } | { name: string; data: string }[] = []
+
+    if (formData.images) {
+      if (Array.isArray(formData.images)) {
+        imagesBase64 = await Promise.all(
+          formData.images.map(async (file: File) => ({
+            name: file.name,
+            data: await fileToBase64(file),
+          })),
+        )
+      } else {
+        const file = formData.images as File
+        imagesBase64 = { name: file.name, data: await fileToBase64(file) }
+      }
+    }
+
+    // Overwrite the images field with the converted base64 data.
+    const payloadData = {
+      ...formData,
+      images: imagesBase64,
+    }
+
+    try {
+      await fetch('/api/base/subscriptions/sign-up/form', {
+        method: 'POST',
+        cache: 'no-cache',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payloadData),
+      })
+      await createSubscription()
+      setSuccess(true)
+      setError(false)
+
+      reset()
+    } catch (err) {
+      setSuccess(false)
+      setError(true)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  if (showLogin) {
+    return (
+      <div className="mt-48 mb-32 container">
+        <LoginSignUp onAuth={() => setShowLogin(false)} />
+      </div>
+    )
+  } else {
+    return (
+      <>
+        <div className="relative flex items-center justify-center text-white h-min">
+          {/* Overlay */}
+          <div className="bg-black bg-opacity-40 w-full h-full min-h-[70vh] flex items-center">
+            <div
+              className="container mt-16 lg:mt-0 z-10 relative flex items-center"
+              data-theme="dark"
+            >
+              <div className="max-w-[800px] prose md:prose-md dark:prose-invert">
+                <div>
+                  <h1>SELECTED PACKAGE</h1>
+                  <h2 className="text-2xl font-header my-3">{formattedSubscriptionTerm}</h2>
+                  <h3 className="text-xl mb-8">£{planData?.price} / month</h3>
+                  <Button type="button" link="/pricing" rounded="lg">
+                    Change Package
+                  </Button>
+                </div>
+              </div>
+            </div>
+            {/* Overlay Shading */}
+            <div className="absolute -bottom-px bg-gradient-to-b from-transparent to-background w-full h-1/2" />
+          </div>
+          {/* Background Image */}
+          <div className="min-h-[50vh] select-none">
+            <Image
+              src="/api/media/file/healthy-food-bowl-1.jpeg"
+              alt=""
+              fill
+              className="-z-10 object-cover"
+              priority
+            />
           </div>
         </div>
-      )}
-    </div>
-  )
+        <div className="container">
+          <form className="my-32 flex flex-col gap-12" onSubmit={handleSubmit(onSubmit)}>
+            {/* Form Top: User Information */}
+            <div>
+              <h2 className="font-header mb-8 text-2xl">Your Information</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
+                <Input
+                  id="name"
+                  placeholder="Your Name"
+                  label="Name"
+                  register={register}
+                  errors={errors}
+                  animatePlaceholder={true}
+                  watch={watch}
+                  required
+                />
+                <Input
+                  id="email"
+                  placeholder="Your Email"
+                  label="Email"
+                  register={register}
+                  errors={errors}
+                  animatePlaceholder={true}
+                  watch={watch}
+                  required
+                />
+                <Input
+                  id="phone"
+                  placeholder="Phone Number"
+                  label="Phone Number"
+                  register={register}
+                  errors={errors}
+                  animatePlaceholder={true}
+                  watch={watch}
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Form Bottom: Goals and Additional Information */}
+            <div>
+              <h2 className="font-header mb-8 text-2xl">A Little More About Your Goals</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
+                <Input
+                  id="bodyWeight"
+                  label="What is your current body weight?"
+                  register={register}
+                  errors={errors}
+                  animatePlaceholder={true}
+                  watch={watch}
+                  required
+                />
+                <Input
+                  id="hoursPerWeekTraining"
+                  label="How many hours a week do you train?"
+                  register={register}
+                  errors={errors}
+                  animatePlaceholder={true}
+                  watch={watch}
+                  required
+                />
+                <Input
+                  id="jobTitle"
+                  label="What is your current job title?"
+                  register={register}
+                  errors={errors}
+                  animatePlaceholder={true}
+                  watch={watch}
+                  required
+                />
+                <Input
+                  id="foodAllergies"
+                  label="Do you have any food allergies?"
+                  register={register}
+                  errors={errors}
+                  animatePlaceholder={true}
+                  watch={watch}
+                  required
+                />
+                <Input
+                  id="healthConditions"
+                  label="Do you have any health conditions? (Diabetes, Crohn's, etc)"
+                  register={register}
+                  errors={errors}
+                  animatePlaceholder={true}
+                  watch={watch}
+                  required
+                />
+                <Input
+                  id="goalWeight"
+                  label="What is your goal weight?"
+                  register={register}
+                  errors={errors}
+                  animatePlaceholder={true}
+                  watch={watch}
+                  required
+                />
+                <Input
+                  id="howOftenContact"
+                  label="How often would you like contact with me?"
+                  register={register}
+                  errors={errors}
+                  animatePlaceholder={true}
+                  watch={watch}
+                  required
+                />
+                <Input
+                  id="foodDislikes"
+                  label="Are there any foods you dislike?"
+                  register={register}
+                  errors={errors}
+                  animatePlaceholder={true}
+                  watch={watch}
+                  required
+                />
+                <Input
+                  id="anyQuestions"
+                  type="textarea"
+                  label="Any questions you’d like to ask me?"
+                  register={register}
+                  errors={errors}
+                  animatePlaceholder={false}
+                  watch={watch}
+                  required
+                />
+                <UploadFile
+                  id="images"
+                  errors={errors}
+                  accepts="jpg, jpeg, png"
+                  control={control}
+                  label="Photos of current physique (Front, Side & Rear)*"
+                  required={false}
+                  hasMany
+                  isImages
+                />
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <div className="mt-12 flex justify-center">
+              <div className="max-w-max">
+                <Button type="submit" rounded="lg" disabled={submitting}>
+                  Proceed To Payment Setup
+                </Button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </>
+    )
+  }
 }
 
 export default Page

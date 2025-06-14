@@ -23,7 +23,6 @@ const CartPopup: React.FC<CartProps> = ({ className, type }) => {
   // Fetch cart items when the component mounts
   useEffect(() => {
     const fetchCartItems = async () => {
-      console.log('fetching cart items...')
       const { lineItems } = await getCartItems() // Fetch the cart items from your cart function
       setCartItems(lineItems)
 
@@ -33,8 +32,6 @@ const CartPopup: React.FC<CartProps> = ({ className, type }) => {
         0,
       )
       setCartItemCount(itemCount ?? 0)
-
-      console.log('cart items:', lineItems)
 
       // Fetch product details for each item in the cart if it's a local cart
       lineItems?.forEach(async (item: LineItem) => {

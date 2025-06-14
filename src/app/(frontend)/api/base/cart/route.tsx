@@ -33,8 +33,6 @@ export async function POST(request: Request) {
     const body: { cart: { lineItems: Cart['lineItems'] } } = await request.json()
     const { cart } = body
 
-    console.log('cart in api cart route', cart.lineItems)
-
     if (!cart || !Array.isArray(cart.lineItems)) {
       return NextResponse.json({ error: 'Invalid cart data' }, { status: 400 })
     }

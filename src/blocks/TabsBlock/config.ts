@@ -43,6 +43,10 @@ export const TabsBlock: Block = {
               defaultValue: 0,
             },
             {
+              name: 'allowUrlControls',
+              type: 'checkbox',
+            },
+            {
               name: 'tabs',
               type: 'array',
               label: 'Tabs',

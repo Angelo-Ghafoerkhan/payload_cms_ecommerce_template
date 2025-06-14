@@ -79,9 +79,6 @@ export const POST = async (request: Request) => {
                 status: 'active',
               },
             })
-            console.log(
-              `Updated subscription ${websiteSubscriptionId} with Stripe ID ${stripeSubscriptionId}`,
-            )
           } catch (error: any) {
             console.error('Error updating subscription record:', error)
             return NextResponse.json({ error: error.message }, { status: 500 })
@@ -90,7 +87,6 @@ export const POST = async (request: Request) => {
             const customerEmail = session.customer_details?.email || session.customer_email
             if (customerEmail) {
               await sendOrderEmail(customerEmail, 'subscription')
-              console.log('Subscription confirmation email sent to:', customerEmail)
             }
           } catch (emailError: any) {
             console.error('Error sending subscription email:', emailError)
@@ -106,7 +102,7 @@ export const POST = async (request: Request) => {
         const userIdRaw = sessionAny.metadata?.userId
         const orderRef = sessionAny.metadata?.orderRef // if you're using an orderRef
         const cartSummaryRaw = sessionAny.metadata?.cartSummary || ''
-        console.log('cartSummaryRaw:', cartSummaryRaw)
+
         const lineItems = decodeCartSummary(cartSummaryRaw)
         const address = session.collected_information?.shipping_details?.address
 
@@ -167,7 +163,6 @@ export const POST = async (request: Request) => {
                 },
               },
             })
-            console.log('Updated order with PaymentIntent invoice details.')
           }
 
           // Optionally update product stock.
@@ -186,11 +181,8 @@ export const POST = async (request: Request) => {
             const customerEmail = session.customer_email || sessionAny.customer_details?.email || ''
             if (customerEmail) {
               await sendOrderEmail(customerEmail, 'order')
-              console.log('Order confirmation email sent to:', customerEmail)
             }
-          } catch (emailError: any) {
-            console.error('Error sending order confirmation email:', emailError)
-          }
+          } catch (emailError: any) {}
           return NextResponse.json({ productOrder }, { status: 200 })
         } catch (error: any) {
           console.error('Error creating order:', error)
@@ -250,9 +242,7 @@ export const POST = async (request: Request) => {
                 id: websiteSubscriptionId,
                 data: { orders: updatedOrders },
               })
-              console.log(`Updated subscription ${websiteSubscriptionId} with new order reference.`)
             } catch (updateError: any) {
-              console.error('Error creating/updating recurring subscription order:', updateError)
               return NextResponse.json({ error: updateError.message }, { status: 500 })
             }
           } else {

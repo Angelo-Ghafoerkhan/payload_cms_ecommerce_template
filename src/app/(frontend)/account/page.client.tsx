@@ -43,7 +43,6 @@ const PageClient: React.FC = () => {
       if (sessionId) {
         try {
           await clearCart()
-          console.log('Cart cleared.')
         } catch (error) {
           console.error('Error clearing cart:', error)
         }
@@ -89,10 +88,12 @@ const PageClient: React.FC = () => {
     if (user) {
       const fetchOrders = async () => {
         try {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?userId=${user.id}`,
-            { cache: 'no-store' },
-          )
+          const ordersURL =
+            `${process.env.NEXT_PUBLIC_SERVER_URL}` +
+            `/api/orders?where[user][equals]=${encodeURIComponent(user.id)}`
+
+          const response = await fetch(ordersURL, { cache: 'no-store' })
+
           if (!response.ok) throw new Error(response.statusText)
           const data = await response.json()
 
@@ -104,10 +105,12 @@ const PageClient: React.FC = () => {
 
       const fetchSubscriptions = async () => {
         try {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/subscriptions?userId=${user.id}`,
-            { cache: 'no-store' },
-          )
+          const subscriptionsUrl =
+            `${process.env.NEXT_PUBLIC_SERVER_URL}` +
+            `/api/subscriptions?where[user][equals]=${encodeURIComponent(user.id)}`
+
+          const response = await fetch(subscriptionsUrl, { cache: 'no-store' })
+
           if (!response.ok) throw new Error(response.statusText)
           const data = await response.json()
           setSubscriptions(data.docs || [])

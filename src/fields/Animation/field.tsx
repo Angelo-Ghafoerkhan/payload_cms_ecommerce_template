@@ -19,6 +19,7 @@ export const animationField: Field = {
       defaultValue: 'onLoad',
       options: [
         { label: 'On Page Load', value: 'onLoad' },
+        { label: 'On Component Mount', value: 'onComponentLoad' },
         { label: 'On Scroll Into View', value: 'onScroll' },
         { label: 'On Hover', value: 'onHover' },
       ],

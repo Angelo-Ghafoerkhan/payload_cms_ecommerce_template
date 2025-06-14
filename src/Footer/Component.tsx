@@ -192,9 +192,7 @@ const renderColumn = (
 export async function Footer() {
   const footerData: Footer = await getCachedGlobal('footer', 1)()
 
-  console.log('Getting global settings')
   const settings = await getCachedGlobal('settings', 1)()
-  console.log('Got settings')
 
   const columns = footerData?.columns || []
 

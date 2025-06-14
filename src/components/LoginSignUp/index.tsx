@@ -6,7 +6,7 @@ import { useForm, SubmitHandler, FieldValues } from 'react-hook-form'
 import Button from '@/components/Button'
 import { toast } from 'react-toast'
 import { usePathname, useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import ModalNoConfirm from '@/components/ModalNoConfirm'
 
 import CreatePassword from '@/collections/Users/components/CreatePassword'
@@ -14,7 +14,11 @@ import { mergeCartsAfterLogin } from '@/collections/Ecommerce/Carts/utils/cartFu
 import { Metadata } from 'next'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 
-export default function LoginSignUp() {
+interface LoginSignUpProps {
+  onAuth?: () => void // ← new optional prop
+}
+
+const LoginSignUp: FC<LoginSignUpProps> = ({ onAuth }) => {
   const [isSignUp, setIsSignUp] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const [passwordsValid, setPasswordsValid] = useState(false)
@@ -81,6 +85,7 @@ export default function LoginSignUp() {
         if (res.ok) {
           const userData = await res.json()
           await mergeCartsAfterLogin(userData.user.id)
+          onAuth?.()
           router.push(pathname)
         } else {
           const errorData = await res.json()
@@ -106,6 +111,7 @@ export default function LoginSignUp() {
       if (res.ok) {
         const userData = await res.json()
         await mergeCartsAfterLogin(userData.user.id)
+        onAuth?.()
         router.push(pathname)
       } else {
         const errorData = await res.json()
@@ -237,3 +243,5 @@ export default function LoginSignUp() {
     </>
   )
 }
+
+export default LoginSignUp

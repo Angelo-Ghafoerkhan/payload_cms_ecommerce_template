@@ -47,8 +47,6 @@ export const emailSettings = {
   },
 }
 
-// const settings = await payload.getGlobal
-
 export default buildConfig({
   email: nodemailerAdapter({
     defaultFromAddress: process.env.SMTP_ADMIN_USER as string,

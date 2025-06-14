@@ -1,4 +1,4 @@
-// src/components/RenderBlocks.tsx
+// src/components/RenderTabBlocks.tsx
 'use client'
 
 import React, { Fragment } from 'react'
@@ -76,6 +76,7 @@ export const RenderTabBlocks: React.FC<RenderBlocksProps> = ({
           return (
             <div className="my-16" key={idx}>
               <RenderAnimation
+                key={`${idx}-${animation.trigger}-${Date.now()}`} // force remount on tab change
                 trigger={animation.trigger}
                 type={animation.type}
                 duration={animation.duration}

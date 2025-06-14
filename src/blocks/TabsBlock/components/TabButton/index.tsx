@@ -54,7 +54,7 @@ const TabButton: React.FC<TabButtonProps> = ({ title, isActive, onClick, type, l
         target={link?.newTab ? '_blank' : undefined}
         rel={link?.newTab ? 'noopener noreferrer' : undefined}
         className={[
-          'px-4 py-2 font-medium focus:outline-none',
+          'px-4 py-2 font-medium focus:outline-none w-max whitespace-nowrap',
           'text-foreground hover:text-secondary',
         ].join(' ')}
       >
@@ -67,7 +67,7 @@ const TabButton: React.FC<TabButtonProps> = ({ title, isActive, onClick, type, l
     <button
       onClick={onClick}
       className={[
-        'px-4 py-2 font-medium focus:outline-none',
+        'px-4 py-2 font-medium focus:outline-none w-max whitespace-nowrap',
         isActive
           ? 'border-b-2 border-current text-primary'
           : 'text-foreground hover:text-secondary',

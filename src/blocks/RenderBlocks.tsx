@@ -21,9 +21,11 @@ import StaffImageSpielBlock from './StaffImageSpielBlock/component'
 import { GoogleMap } from './GoogleMap/component'
 import clsx from 'clsx'
 import ImageOverlayCTA from './ImageOverlayCTA'
+import CategoryShowcase from './CategoryShowcase/component'
 
 const blockComponents: Record<string, React.ComponentType<any>> = {
   archive: ArchiveBlock,
+  categoryShowcase: CategoryShowcase,
   contactSection: ContactSection,
   content: ContentBlock,
   cta: CallToActionBlock,

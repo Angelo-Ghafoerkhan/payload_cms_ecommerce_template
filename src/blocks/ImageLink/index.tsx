@@ -34,11 +34,12 @@ const ImageLinkBlock: React.FC<ImageLinkBlockProps> = ({ image, text, link }) =>
       {/* clickable overlay */}
       <CMSLink
         {...link}
-        className="absolute pt-8 inset-0 z-10 flex flex-col h-full justify-start gap-4 bg-black/50 text-white no-underline hover:bg-primary/50"
+        className="absolute pt-8 px-8 inset-0 z-10 flex flex-col h-full justify-start gap-4 bg-black/50 text-white no-underline hover:bg-primary/50"
       >
         <RichText
           data={text}
-          className="prose-h2:no-underline prose-h2:mb-1 prose-p:no-underline pb-16"
+          className="prose-h2:no-underline prose-h2:mb-1 prose-p:no-underline pb-16 w-full"
+          enableGutter={false}
         />
         <ArrowRight className="fill-white w-16 h-auto absolute bottom-2 right-2" />
       </CMSLink>

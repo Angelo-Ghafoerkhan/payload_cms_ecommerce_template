@@ -32,9 +32,7 @@ export const Logo = (props: Props) => {
       const res = await fetch('/api/globals/settings')
       const data = await res.json()
       setSettings(data)
-    } catch (error) {
-      console.log('Something went wrong while fetching settings')
-    }
+    } catch (error) {}
   }, [])
 
   useEffect(() => {

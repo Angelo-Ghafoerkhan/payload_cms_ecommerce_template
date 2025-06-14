@@ -21,13 +21,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   }
 
   const handleConfirmClose = () => {
-    console.log('Confirm close')
     setShowConfirmClose(false)
     onClose()
   }
 
   const handleCancelClose = () => {
-    console.log('Cancel Close')
     setShowConfirmClose(false)
   }
 

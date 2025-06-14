@@ -1,5 +1,6 @@
 import tailwindcssAnimate from 'tailwindcss-animate'
 import typography from '@tailwindcss/typography'
+import tailwindScrollbarHide from 'tailwind-scrollbar-hide'
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -10,7 +11,7 @@ const config = {
     './src/**/*.{ts,tsx}',
   ],
   darkMode: ['selector', '[data-theme="dark"]'],
-  plugins: [tailwindcssAnimate, typography],
+  plugins: [tailwindcssAnimate, typography, tailwindScrollbarHide],
   prefix: '',
   safelist: [
     'lg:col-span-4',

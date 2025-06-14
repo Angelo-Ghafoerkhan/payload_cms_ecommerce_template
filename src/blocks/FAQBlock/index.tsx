@@ -25,7 +25,6 @@ const FAQBlock: React.FC<FAQBlockProps> = ({ faqs }) => {
         </h2>
         <div>
           {questions?.map((qa, index) => {
-            console.log(qa)
             return (
               <FAQAccordian
                 key={qa.question}

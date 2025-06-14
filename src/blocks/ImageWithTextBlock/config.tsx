@@ -11,6 +11,7 @@ import {
 } from '@payloadcms/richtext-lexical'
 import { Block } from 'payload'
 import { SingleBlockOptions } from '../BlockOptions'
+import { link } from '@/fields/link'
 
 export const ImageWithTextBlock: Block = {
   slug: 'imageWithTextBlock',
@@ -43,6 +44,10 @@ export const ImageWithTextBlock: Block = {
                     },
                     {
                       name: 'primaryBackgroundColor',
+                      type: 'checkbox',
+                    },
+                    {
+                      name: 'containImage',
                       type: 'checkbox',
                     },
                   ],
@@ -89,20 +94,17 @@ export const ImageWithTextBlock: Block = {
             },
             {
               name: 'callToAction',
-              type: 'group',
-              fields: [
-                {
-                  name: 'text',
-                  type: 'text',
-                  required: false,
-                },
-                {
-                  name: 'link',
-                  type: 'text',
-                  required: false,
-                },
-              ],
+              type: 'checkbox',
+              label: 'Call to Action',
             },
+            link({
+              overrides: {
+                name: 'link',
+                admin: {
+                  condition: (data, siblingData) => siblingData.callToAction,
+                },
+              },
+            }),
           ],
         },
         {

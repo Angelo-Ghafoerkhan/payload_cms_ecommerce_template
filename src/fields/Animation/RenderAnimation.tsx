@@ -7,7 +7,7 @@ import { useInView } from 'react-intersection-observer'
 
 export interface AnimationProps {
   enabled?: boolean
-  trigger: 'onLoad' | 'onScroll' | 'onHover'
+  trigger: 'onLoad' | 'onScroll' | 'onHover' | 'onComponentLoad'
   type: 'fade' | 'slideLeft' | 'slideRight' | 'zoom'
   duration: number
   delay: number
@@ -26,8 +26,7 @@ export default function RenderAnimation({
   const controls = useAnimation()
   const [ref, inView] = useInView({
     triggerOnce: true,
-    // convert percentage to [0..1]
-    threshold: threshold / 100,
+    rootMargin: `0px 0px -${threshold}% 0px`,
   })
 
   const variants = {
@@ -38,7 +37,7 @@ export default function RenderAnimation({
   }
 
   useEffect(() => {
-    if (trigger === 'onLoad') {
+    if (trigger === 'onLoad' || trigger === 'onComponentLoad') {
       controls.start('show')
     } else if (trigger === 'onScroll' && inView) {
       controls.start('show')

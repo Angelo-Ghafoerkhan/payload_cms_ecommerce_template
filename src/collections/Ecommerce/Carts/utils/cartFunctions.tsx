@@ -89,7 +89,6 @@ export const getUserCart = async (): Promise<{
   let cart: Cart
 
   if (user) {
-    console.log('user', user)
     // Fetch the cart from the server.
     const userCartResponse = await fetch(`/api/carts?where[customer][equals]=${user.id}`, {
       cache: 'no-cache',
@@ -307,9 +306,6 @@ export async function removeFromCart(productId: number, variantId?: string | nul
     )
     cart.lineItems = newLineItems
 
-    console.log('Removing from cart:', productId, variantId)
-    console.log(cart)
-
     updatedCart = await updateUserCart(cart)
     window.dispatchEvent(new Event('cartUpdated'))
   } else {
@@ -338,7 +334,6 @@ export async function removeFromCart(productId: number, variantId?: string | nul
  * This function assumes the user is logged in.
  */
 export async function mergeCartItems(localLineItems: any[]) {
-  console.log('Merging cart items...')
   const { user, cart } = await getUserCart()
   if (user) {
     const updatedLineItems = [...(cart.lineItems || [])]
@@ -383,7 +378,6 @@ export async function mergeCartItems(localLineItems: any[]) {
  * After login, merge the local cart into the user's cart.
  */
 export const mergeCartsAfterLogin = async (userId: number) => {
-  console.log('Merging carts after login:', userId)
   const localCartRaw = localStorage.getItem('cart')
   if (!localCartRaw) return
 
@@ -406,7 +400,6 @@ export const mergeCartsAfterLogin = async (userId: number) => {
   if (!localCart.lineItems || localCart.lineItems.length === 0) return
 
   const mergedCart = await mergeCartItems(localCart.lineItems)
-  console.log('Merged cart:', mergedCart)
   await updateUserCart(mergedCart)
   localStorage.removeItem('cart')
   window.dispatchEvent(new Event('cartUpdated'))

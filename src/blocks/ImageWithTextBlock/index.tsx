@@ -8,20 +8,20 @@ import clsx from 'clsx'
 import Image from 'next/image'
 import { ChevronLeft, ChevronRight, Expand } from 'lucide-react'
 import GalleryModal from '../Gallery/components/GalleryModal'
+import { CMSLink, CMSLinkType } from '@/components/Link'
 
 interface ImageWithTextBlockProps {
   meta: {
     removeTitle: boolean
     flipImage: boolean
     primaryBackgroundColor: boolean
+    containImage: boolean
   }
   title?: string
   images: Media[]
   text: SerializedEditorState
-  callToAction?: {
-    text?: string
-    link?: string
-  }
+  callToAction?: boolean
+  link: CMSLinkType
 }
 
 const ImageWithTextBlock: React.FC<ImageWithTextBlockProps> = ({
@@ -29,6 +29,7 @@ const ImageWithTextBlock: React.FC<ImageWithTextBlockProps> = ({
   images,
   text,
   callToAction,
+  link,
   meta,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0) // Track current slide index
@@ -63,7 +64,7 @@ const ImageWithTextBlock: React.FC<ImageWithTextBlockProps> = ({
               src={images[currentIndex]?.url ?? ''}
               alt={images[currentIndex]?.alt || `Image ${currentIndex + 1}`}
               fill
-              className="rounded-2xl object-cover"
+              className={clsx('rounded-2xl', meta.containImage ? 'object-contain' : 'object-cover')}
             />
 
             {/* Expand icon */}
@@ -102,6 +103,7 @@ const ImageWithTextBlock: React.FC<ImageWithTextBlockProps> = ({
               enableGutter={false}
               className={clsx(meta.primaryBackgroundColor && '!text-white prose-invert')}
             />
+            {callToAction && <CMSLink {...link} />}
           </div>
         </div>
 

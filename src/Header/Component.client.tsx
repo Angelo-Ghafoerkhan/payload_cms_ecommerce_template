@@ -74,7 +74,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, settings }) =>
     }
 
     checkIsLoggedIn()
-  })
+  }, [])
 
   useEffect(() => {
     setHeaderTheme(null)
@@ -100,7 +100,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, settings }) =>
   return (
     <header
       className={clsx(
-        'w-screen z-20 pb-2 transition-transform duration-300',
+        'w-screen z-40 pb-2 transition-transform duration-300',
         hideHeader && data.settings?.header?.hideOnScrollDown
           ? '-translate-y-[120%]'
           : 'translate-y-0',
@@ -192,12 +192,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, settings }) =>
               </Link>
             )}
 
-            {showCTA && callToAction?.link && (
-              <CMSLink
-                {...callToAction.link}
-                className="hidden md:flex h-9 px-4 outline-foreground border-[1.5px] border-foreground rounded-lg aspect-square bg-white/30 backdrop-blur-lg shadow-lg items-center justify-center text-foreground font-bold group hover:bg-primary transition-colors"
-              />
-            )}
+            {showCTA && callToAction?.link && <CMSLink {...callToAction.link} />}
             <MobileNav header={data} settings={settings} />
           </div>
           {/* End of Optionals */}

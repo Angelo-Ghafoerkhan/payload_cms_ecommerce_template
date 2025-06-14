@@ -371,13 +371,14 @@ export interface Page {
   };
   layout: (
     | CallToActionBlock
+    | CategoryShowcase
     | ContactSectionBlock
     | ContentBlock
     | {
         faqs: number | Faq;
         animation?: {
           enabled?: boolean | null;
-          trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+          trigger?: ('onLoad' | 'onComponentLoad' | 'onScroll' | 'onHover') | null;
           type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
           threshold?: number | null;
           duration?: number | null;
@@ -392,7 +393,7 @@ export interface Page {
         gallery: number | Gallery;
         animation?: {
           enabled?: boolean | null;
-          trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+          trigger?: ('onLoad' | 'onComponentLoad' | 'onScroll' | 'onHover') | null;
           type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
           threshold?: number | null;
           duration?: number | null;
@@ -432,7 +433,7 @@ export interface Page {
           | null;
         animation?: {
           enabled?: boolean | null;
-          trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+          trigger?: ('onLoad' | 'onComponentLoad' | 'onScroll' | 'onHover') | null;
           type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
           threshold?: number | null;
           duration?: number | null;
@@ -445,6 +446,7 @@ export interface Page {
     | {
         tabPosition?: ('left' | 'middle' | 'right') | null;
         initialTab?: number | null;
+        allowUrlControls?: boolean | null;
         tabs?:
           | {
               title: string;
@@ -457,7 +459,7 @@ export interface Page {
                         faqs: number | Faq;
                         animation?: {
                           enabled?: boolean | null;
-                          trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+                          trigger?: ('onLoad' | 'onComponentLoad' | 'onScroll' | 'onHover') | null;
                           type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
                           threshold?: number | null;
                           duration?: number | null;
@@ -472,7 +474,7 @@ export interface Page {
                         gallery: number | Gallery;
                         animation?: {
                           enabled?: boolean | null;
-                          trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+                          trigger?: ('onLoad' | 'onComponentLoad' | 'onScroll' | 'onHover') | null;
                           type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
                           threshold?: number | null;
                           duration?: number | null;
@@ -508,7 +510,7 @@ export interface Page {
                           | null;
                         animation?: {
                           enabled?: boolean | null;
-                          trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+                          trigger?: ('onLoad' | 'onComponentLoad' | 'onScroll' | 'onHover') | null;
                           type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
                           threshold?: number | null;
                           duration?: number | null;
@@ -551,7 +553,7 @@ export interface Page {
           | null;
         animation?: {
           enabled?: boolean | null;
-          trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+          trigger?: ('onLoad' | 'onComponentLoad' | 'onScroll' | 'onHover') | null;
           type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
           threshold?: number | null;
           duration?: number | null;
@@ -865,6 +867,28 @@ export interface CallToActionBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categoryShowcase".
+ */
+export interface CategoryShowcase {
+  category: number | ProductCategory;
+  /**
+   * Number of products to display in this category
+   */
+  limit?: number | null;
+  /**
+   * Show the category title above the products
+   */
+  showTitle?: boolean | null;
+  /**
+   * Enable pagination for this category
+   */
+  allowPagination?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'categoryShowcase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ContactSectionBlock".
  */
 export interface ContactSectionBlock {
@@ -905,8 +929,10 @@ export interface ContentBlock {
               | ImageWithTextOverlayBlock
               | InfoCardBlock
               | MediaBlock
+              | ReviewCard
               | StaffImageSpielBlock
               | SubscriptionPlanBlock
+              | SingleProduct
             )[]
           | null;
         enableLink?: boolean | null;
@@ -950,7 +976,7 @@ export interface ContentBlock {
     | null;
   animation?: {
     enabled?: boolean | null;
-    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    trigger?: ('onLoad' | 'onComponentLoad' | 'onScroll' | 'onHover') | null;
     type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
     threshold?: number | null;
     duration?: number | null;
@@ -984,7 +1010,7 @@ export interface FormBlock {
   } | null;
   animation?: {
     enabled?: boolean | null;
-    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    trigger?: ('onLoad' | 'onComponentLoad' | 'onScroll' | 'onHover') | null;
     type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
     threshold?: number | null;
     duration?: number | null;
@@ -1179,7 +1205,7 @@ export interface GoogleMapBlock {
   height?: number | null;
   animation?: {
     enabled?: boolean | null;
-    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    trigger?: ('onLoad' | 'onComponentLoad' | 'onScroll' | 'onHover') | null;
     type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
     threshold?: number | null;
     duration?: number | null;
@@ -1238,7 +1264,7 @@ export interface ImageLinkBlock {
   };
   animation?: {
     enabled?: boolean | null;
-    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    trigger?: ('onLoad' | 'onComponentLoad' | 'onScroll' | 'onHover') | null;
     type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
     threshold?: number | null;
     duration?: number | null;
@@ -1307,7 +1333,7 @@ export interface InfoCardBlock {
   } | null;
   animation?: {
     enabled?: boolean | null;
-    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    trigger?: ('onLoad' | 'onComponentLoad' | 'onScroll' | 'onHover') | null;
     type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
     threshold?: number | null;
     duration?: number | null;
@@ -1325,7 +1351,7 @@ export interface MediaBlock {
   media: number | Media;
   animation?: {
     enabled?: boolean | null;
-    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    trigger?: ('onLoad' | 'onComponentLoad' | 'onScroll' | 'onHover') | null;
     type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
     threshold?: number | null;
     duration?: number | null;
@@ -1334,6 +1360,21 @@ export interface MediaBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'mediaBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviewCard".
+ */
+export interface ReviewCard {
+  name: string;
+  /**
+   * Rating in stars (1 to 5)
+   */
+  rating: number;
+  reviewText: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'reviewCard';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1360,7 +1401,7 @@ export interface StaffImageSpielBlock {
   };
   animation?: {
     enabled?: boolean | null;
-    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    trigger?: ('onLoad' | 'onComponentLoad' | 'onScroll' | 'onHover') | null;
     type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
     threshold?: number | null;
     duration?: number | null;
@@ -1378,7 +1419,7 @@ export interface SubscriptionPlanBlock {
   subscriptionPlan?: (number | null) | Plan;
   animation?: {
     enabled?: boolean | null;
-    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    trigger?: ('onLoad' | 'onComponentLoad' | 'onScroll' | 'onHover') | null;
     type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
     threshold?: number | null;
     duration?: number | null;
@@ -1432,6 +1473,16 @@ export interface Plan {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "singleProduct".
+ */
+export interface SingleProduct {
+  product: number | Product;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'singleProduct';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ImageOverlayCTA".
  */
 export interface ImageOverlayCTA {
@@ -1478,7 +1529,7 @@ export interface ImageOverlayCTA {
   };
   animation?: {
     enabled?: boolean | null;
-    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    trigger?: ('onLoad' | 'onComponentLoad' | 'onScroll' | 'onHover') | null;
     type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
     threshold?: number | null;
     duration?: number | null;
@@ -1497,6 +1548,7 @@ export interface ImageWithTextBlock {
     removeTitle?: boolean | null;
     flipImage?: boolean | null;
     primaryBackgroundColor?: boolean | null;
+    containImage?: boolean | null;
   };
   title?: string | null;
   images?: (number | Media)[] | null;
@@ -1515,13 +1567,45 @@ export interface ImageWithTextBlock {
     };
     [k: string]: unknown;
   };
-  callToAction?: {
-    text?: string | null;
-    link?: string | null;
+  callToAction?: boolean | null;
+  link?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'product-categories';
+          value: number | ProductCategory;
+        } | null)
+      | ({
+          relationTo: 'products';
+          value: number | Product;
+        } | null);
+    url?: string | null;
+    label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'secondary' | 'dark' | 'outline') | null;
+    showIcon?: boolean | null;
+    icon?: {
+      source?: ('lucide' | 'upload') | null;
+      color?: string | null;
+      size?: number | null;
+      name?: string | null;
+      upload?: (number | null) | Media;
+    };
   };
   animation?: {
     enabled?: boolean | null;
-    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    trigger?: ('onLoad' | 'onComponentLoad' | 'onScroll' | 'onHover') | null;
     type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
     threshold?: number | null;
     duration?: number | null;
@@ -1543,7 +1627,7 @@ export interface LogoCarousel {
   images: (number | Media)[];
   animation?: {
     enabled?: boolean | null;
-    trigger?: ('onLoad' | 'onScroll' | 'onHover') | null;
+    trigger?: ('onLoad' | 'onComponentLoad' | 'onScroll' | 'onHover') | null;
     type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
     threshold?: number | null;
     duration?: number | null;
@@ -2082,6 +2166,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         cta?: T | CallToActionBlockSelect<T>;
+        categoryShowcase?: T | CategoryShowcaseSelect<T>;
         contactSection?: T | ContactSectionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         faqBlock?:
@@ -2153,6 +2238,7 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               tabPosition?: T;
               initialTab?: T;
+              allowUrlControls?: T;
               tabs?:
                 | T
                 | {
@@ -2299,6 +2385,18 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categoryShowcase_select".
+ */
+export interface CategoryShowcaseSelect<T extends boolean = true> {
+  category?: T;
+  limit?: T;
+  showTitle?: T;
+  allowPagination?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ContactSectionBlock_select".
  */
 export interface ContactSectionBlockSelect<T extends boolean = true> {
@@ -2326,8 +2424,10 @@ export interface ContentBlockSelect<T extends boolean = true> {
               imageWithTextOverlayBlock?: T | ImageWithTextOverlayBlockSelect<T>;
               infoCardBlock?: T | InfoCardBlockSelect<T>;
               mediaBlock?: T | MediaBlockSelect<T>;
+              reviewCard?: T | ReviewCardSelect<T>;
               staffImageSpielBlock?: T | StaffImageSpielBlockSelect<T>;
               subscriptionPlanBlock?: T | SubscriptionPlanBlockSelect<T>;
+              singleProduct?: T | SingleProductSelect<T>;
             };
         enableLink?: T;
         link?:
@@ -2501,6 +2601,17 @@ export interface MediaBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviewCard_select".
+ */
+export interface ReviewCardSelect<T extends boolean = true> {
+  name?: T;
+  rating?: T;
+  reviewText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "staffImageSpielBlock_select".
  */
 export interface StaffImageSpielBlockSelect<T extends boolean = true> {
@@ -2537,6 +2648,15 @@ export interface SubscriptionPlanBlockSelect<T extends boolean = true> {
         duration?: T;
         delay?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "singleProduct_select".
+ */
+export interface SingleProductSelect<T extends boolean = true> {
+  product?: T;
   id?: T;
   blockName?: T;
 }
@@ -2597,15 +2717,31 @@ export interface ImageWithTextBlockSelect<T extends boolean = true> {
         removeTitle?: T;
         flipImage?: T;
         primaryBackgroundColor?: T;
+        containImage?: T;
       };
   title?: T;
   images?: T;
   text?: T;
-  callToAction?:
+  callToAction?: T;
+  link?:
     | T
     | {
-        text?: T;
-        link?: T;
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+        showIcon?: T;
+        icon?:
+          | T
+          | {
+              source?: T;
+              color?: T;
+              size?: T;
+              name?: T;
+              upload?: T;
+            };
       };
   animation?:
     | T
@@ -3554,6 +3690,18 @@ export interface Header {
             } | null);
         url?: string | null;
         label: string;
+        /**
+         * Choose how the link should be rendered.
+         */
+        appearance?: ('default' | 'secondary' | 'dark' | 'outline') | null;
+        showIcon?: boolean | null;
+        icon?: {
+          source?: ('lucide' | 'upload') | null;
+          color?: string | null;
+          size?: number | null;
+          name?: string | null;
+          upload?: (number | null) | Media;
+        };
       };
     };
   };
@@ -3697,7 +3845,7 @@ export interface Setting {
   businessAddress?: string | null;
   openingHours?:
     | {
-        day: 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+        day: 'mon-fri' | 'weekend' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
         openTime: string;
         closeTime: string;
         id?: string | null;
@@ -3899,6 +4047,17 @@ export interface HeaderSelect<T extends boolean = true> {
                     reference?: T;
                     url?: T;
                     label?: T;
+                    appearance?: T;
+                    showIcon?: T;
+                    icon?:
+                      | T
+                      | {
+                          source?: T;
+                          color?: T;
+                          size?: T;
+                          name?: T;
+                          upload?: T;
+                        };
                   };
             };
       };

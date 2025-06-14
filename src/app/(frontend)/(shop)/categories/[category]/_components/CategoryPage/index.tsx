@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
-import { Product, ProductCategory, ProductImage } from '@/payload-types'
+import { Product, ProductCategory } from '@/payload-types'
 import { ChevronDown, ChevronRight } from 'lucide-react'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
+import SingleProduct from '@/blocks/SingleProduct/component'
 
 interface CategoryPageProps {
   category: ProductCategory
@@ -13,7 +13,6 @@ interface CategoryPageProps {
 
 const CategoryPage: React.FC<CategoryPageProps> = ({ category }) => {
   const [products, setProducts] = useState<Product[]>([])
-  const [hoveredProductId, setHoveredProductId] = useState<string | null>(null)
 
   // Filters
   const [specFilters, setSpecFilters] = useState<{ [label: string]: string[] }>({})
@@ -185,54 +184,9 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ category }) => {
             <p>No products found with the selected filters.</p>
           ) : (
             <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-              {filteredProducts.map((product) => {
-                const images = product.images as ProductImage[]
-
-                let imageUrl = ''
-                if (
-                  product.productType === 'variable' &&
-                  Array.isArray(product.variants) &&
-                  product.variants?.length >= 0
-                ) {
-                  imageUrl = (product.variants[0]?.image as ProductImage).url as string
-                } else {
-                  imageUrl =
-                    hoveredProductId === product.id.toString() && images.length > 1
-                      ? (images[1]?.url as string)
-                      : (images[0]?.url as string)
-                }
-
-                return (
-                  <li
-                    key={product.id}
-                    className="border border-border rounded-lg p-4 bg-card"
-                    onMouseEnter={() => setHoveredProductId(product.id.toString())}
-                    onMouseLeave={() => setHoveredProductId(null)}
-                  >
-                    <Link href={`./${category.slug}/${product.slug}`}>
-                      <div className="w-full h-80 relative mb-4">
-                        <Image
-                          src={imageUrl as string}
-                          alt={`${product.name} Image`}
-                          fill
-                          className="rounded-lg transition-all duration-300 ease-in-out object-cover"
-                        />
-                      </div>
-                      <h2 className="text-xl font-semibold">{product.name}</h2>
-                      <p className="my-2 text-gray-600 text-sm">{/* RICH TEXT */}</p>
-                      {product.price && <p className="font-bold text-2xl mb-4">£{product.price}</p>}
-                      {product.productType === 'variable' && Array.isArray(product.variants) && (
-                        <p>
-                          From{' '}
-                          <span className="font-bold text-2xl mb-4">
-                            £{product.variants[0]?.price}
-                          </span>
-                        </p>
-                      )}
-                    </Link>
-                  </li>
-                )
-              })}
+              {filteredProducts.map((product) => (
+                <SingleProduct key={product.id} product={product} />
+              ))}
             </ul>
           )}
         </div>

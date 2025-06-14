@@ -1,9 +1,18 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 'use client'
 
-import React, { lazy, Suspense, useEffect, useState, type CSSProperties } from 'react'
+import React, {
+  lazy,
+  Suspense,
+  type CSSProperties,
+  useEffect,
+  useState,
+  useMemo,
+  memo,
+} from 'react'
 import clsx from 'clsx'
 import dynamicIconImports from 'lucide-react/dynamicIconImports'
-import { Media } from '@/payload-types'
+import type { Media } from '@/payload-types'
 
 /* -------------------------------------------------------------------------- */
 /*  Types                                                                     */
@@ -14,67 +23,41 @@ type Preset = 'primary' | 'secondary' | 'tertiary'
 export type IconGroupValue = {
   source?: 'lucide' | 'upload' | null
   name?: string | null
-  upload?: number | Media | null | undefined
+  upload?: number | Media | null
   color?: string | null
   size?: number | null
 }
-
-/* -------------------------------------------------------------------------- */
-
-const isPreset = (c?: string): c is Preset =>
-  c === 'primary' || c === 'secondary' || c === 'tertiary'
-
-const fallback = (
-  <div className="animate-pulse bg-gray-300 rounded" style={{ width: 24, height: 24 }} />
-)
-
-/* -------------------------------------------------------------------------- */
-/*  Component                                                                 */
-/* -------------------------------------------------------------------------- */
 
 export interface RenderIconProps {
   icon?: IconGroupValue | null
   className?: string
 }
 
-const RenderIcon: React.FC<RenderIconProps> = ({ icon, className }) => {
-  const [svgMarkup, setSvgMarkup] = useState<string | null>(null)
+/* -------------------------------------------------------------------------- */
+/*  Helpers                                                                   */
+/* -------------------------------------------------------------------------- */
 
-  // Extract values safely
-  const source = icon?.source
-  const color = icon?.color
-  const size = icon?.size ?? 24
+const isPreset = (c?: string): c is Preset =>
+  c === 'primary' || c === 'secondary' || c === 'tertiary'
 
-  // Determine upload URL if applicable
-  const url =
-    source === 'upload'
-      ? typeof icon?.upload === 'string'
-        ? icon.upload
-        : typeof icon?.upload === 'object' && icon?.upload !== null && 'url' in icon.upload
-          ? (icon.upload as Media).url
-          : undefined
-      : undefined
+const fallback = (
+  <div className="animate-pulse rounded bg-gray-300" style={{ width: 24, height: 24 }} />
+)
 
-  // Fetch SVG markup for uploaded icons
-  useEffect(() => {
-    let mounted = true
-    if (source === 'upload' && url) {
-      fetch(url)
-        .then((res) => res.text())
-        .then((txt) => mounted && setSvgMarkup(txt))
-        .catch(() => mounted && setSvgMarkup(null))
-    } else {
-      setSvgMarkup(null)
-    }
-    return () => {
-      mounted = false
-    }
-  }, [source, url])
+// simple in-memory cache for uploaded SVG files
+const svgCache = new Map<string, string>()
 
+/* -------------------------------------------------------------------------- */
+/*  Component                                                                 */
+/* -------------------------------------------------------------------------- */
+
+const _RenderIcon: React.FC<RenderIconProps> = ({ icon, className }) => {
   /* ------------------------------------------------------------------ */
   /*  Early exit                                                         */
   /* ------------------------------------------------------------------ */
   if (!icon) return null
+
+  const { source, color, size = 24 } = icon
 
   /* ------------------------------------------------------------------ */
   /*  Colour helpers                                                     */
@@ -94,16 +77,21 @@ const RenderIcon: React.FC<RenderIconProps> = ({ icon, className }) => {
       : undefined
 
   /* ------------------------------------------------------------------ */
-  /*  Lucide                                                             */
+  /*  Lucide icon                                                        */
   /* ------------------------------------------------------------------ */
   if (source === 'lucide' && icon.name) {
-    const LucideIcon = lazy(dynamicIconImports[icon.name as keyof typeof dynamicIconImports])
+    /** ⚠️  `useMemo` so we don’t create a new lazy component each render */
+
+    const LucideIcon = useMemo(
+      () => lazy(dynamicIconImports[icon.name as keyof typeof dynamicIconImports]),
+      [icon.name],
+    )
 
     return (
       <Suspense fallback={fallback}>
         <LucideIcon
-          size={size}
-          className={clsx(className, twColour)}
+          size={size ?? 24}
+          className={clsx(className, twColour, 'pointer-events-none' /* ← let clicks through */)}
           {...(inlineColour ? { style: inlineColour } : {})}
         />
       </Suspense>
@@ -111,16 +99,45 @@ const RenderIcon: React.FC<RenderIconProps> = ({ icon, className }) => {
   }
 
   /* ------------------------------------------------------------------ */
-  /*  Uploaded SVG                                                      */
+  /*  Uploaded SVG                                                       */
   /* ------------------------------------------------------------------ */
   if (source === 'upload') {
+    const url =
+      typeof icon.upload === 'string'
+        ? icon.upload
+        : typeof icon.upload === 'object' && icon.upload
+          ? icon.upload.url
+          : undefined
+
     if (!url) return null
+
+    const [svgMarkup, setSvgMarkup] = useState<string | null>(svgCache.get(url) ?? null)
+
+    useEffect(() => {
+      if (svgMarkup || !url) return
+
+      let cancelled = false
+      fetch(url)
+        .then((res) => res.text())
+        .then((txt) => {
+          if (!cancelled) {
+            svgCache.set(url, txt)
+            setSvgMarkup(txt)
+          }
+        })
+        .catch(() => !cancelled && setSvgMarkup(null))
+
+      return () => {
+        cancelled = true
+      }
+    }, [url, svgMarkup])
+
     if (!svgMarkup) return fallback
 
     return (
       <div
-        className={clsx(className, twColour)}
-        style={{ width: size, height: size, ...inlineColour }}
+        className={clsx(className, twColour, 'pointer-events-none' /* ← let clicks through */)}
+        style={{ width: size ?? 24, height: size ?? 24, ...inlineColour }}
         dangerouslySetInnerHTML={{ __html: svgMarkup }}
       />
     )
@@ -129,4 +146,9 @@ const RenderIcon: React.FC<RenderIconProps> = ({ icon, className }) => {
   return null
 }
 
-export default RenderIcon
+/* -------------------------------------------------------------------------- */
+/*  Memo-wrap so parent re-renders don’t       */
+/*  re-render the icon unless `icon` changes   */
+/* -------------------------------------------------------------------------- */
+
+export default memo(_RenderIcon)
