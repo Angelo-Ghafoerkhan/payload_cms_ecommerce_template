@@ -11,7 +11,9 @@ import {
   HeadingFeature,
   OrderedListFeature,
   UnorderedListFeature,
+  InlineToolbarFeature,
 } from '@payloadcms/richtext-lexical'
+import { FontColorFeature } from '@/components/payload/lexical/features/fontColor/feature.server'
 
 export const defaultLexical = lexicalEditor({
   features: [
@@ -20,6 +22,8 @@ export const defaultLexical = lexicalEditor({
     HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4', 'h5', 'h6'] }),
     OrderedListFeature(),
     UnorderedListFeature(),
+    FontColorFeature(),
+    InlineToolbarFeature(),
 
     // Tools
     UnderlineFeature(),

@@ -48,6 +48,19 @@ type NodeTypes =
       | SubscriptionPlanBlockProps
     >
 
+export function parseStyleString(style: string): React.CSSProperties {
+  return style
+    .split(';')
+    .filter(Boolean)
+    .reduce((acc, declaration) => {
+      const [prop, value] = declaration.split(':').map((str) => str.trim())
+      if (prop && value) {
+        acc[prop as keyof React.CSSProperties] = value as any
+      }
+      return acc
+    }, {} as React.CSSProperties)
+}
+
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   const { value, relationTo } = linkNode.fields.doc!
   if (typeof value !== 'object') {
@@ -59,6 +72,10 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
 
 const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => ({
   ...defaultConverters,
+  text: ({ node }) => {
+    const style = node?.style
+    return <span style={style ? parseStyleString(style) : undefined}>{node.text}</span>
+  },
   ...LinkJSXConverter({ internalDocToHref }),
   blocks: {
     banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,

@@ -1,3 +1,5 @@
+@tailwind components;
+@tailwind utilities;
 
 .nav-group .nav-group__label {
   @apply font-semibold text-lg mt-6;

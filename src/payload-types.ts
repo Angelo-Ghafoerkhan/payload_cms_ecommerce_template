@@ -54,6 +54,7 @@ export type SupportedTimezones =
   | 'Asia/Singapore'
   | 'Asia/Tokyo'
   | 'Asia/Seoul'
+  | 'Australia/Brisbane'
   | 'Australia/Sydney'
   | 'Pacific/Guam'
   | 'Pacific/Noumea'
@@ -310,7 +311,7 @@ export interface Page {
   id: number;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'splitVisual';
     richText?: {
       root: {
         type: string;
@@ -368,6 +369,21 @@ export interface Page {
       | null;
     alignContent?: ('left' | 'center' | 'right') | null;
     media?: (number | null) | Media;
+    imageAnnotation?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
   };
   layout: (
     | CallToActionBlock
@@ -879,10 +895,14 @@ export interface CategoryShowcase {
    * Show the category title above the products
    */
   showTitle?: boolean | null;
-  /**
-   * Enable pagination for this category
-   */
-  allowPagination?: boolean | null;
+  animation?: {
+    enabled?: boolean | null;
+    trigger?: ('onLoad' | 'onComponentLoad' | 'onScroll' | 'onHover') | null;
+    type?: ('fade' | 'slideLeft' | 'slideRight' | 'zoom') | null;
+    threshold?: number | null;
+    duration?: number | null;
+    delay?: number | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'categoryShowcase';
@@ -1092,6 +1112,7 @@ export interface Form {
             label?: string | null;
             width?: number | null;
             defaultValue?: string | null;
+            placeholder?: string | null;
             options?:
               | {
                   label: string;
@@ -2161,6 +2182,7 @@ export interface PagesSelect<T extends boolean = true> {
             };
         alignContent?: T;
         media?: T;
+        imageAnnotation?: T;
       };
   layout?:
     | T
@@ -2391,7 +2413,16 @@ export interface CategoryShowcaseSelect<T extends boolean = true> {
   category?: T;
   limit?: T;
   showTitle?: T;
-  allowPagination?: T;
+  animation?:
+    | T
+    | {
+        enabled?: T;
+        trigger?: T;
+        type?: T;
+        threshold?: T;
+        duration?: T;
+        delay?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -3274,6 +3305,7 @@ export interface FormsSelect<T extends boolean = true> {
               label?: T;
               width?: T;
               defaultValue?: T;
+              placeholder?: T;
               options?:
                 | T
                 | {

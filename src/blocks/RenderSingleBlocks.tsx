@@ -72,6 +72,7 @@ export const RenderSingleBlocks: React.FC<RenderBlocksProps> = ({
                 type={animation.type}
                 duration={animation.duration}
                 delay={animation.delay}
+                threshold={animation.threshold}
               >
                 {content}
               </RenderAnimation>

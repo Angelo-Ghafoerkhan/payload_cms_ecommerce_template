@@ -1,12 +1,6 @@
 import type { Field } from 'payload'
 
-import {
-  AlignFeature,
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
+import { AlignFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 
 import { linkGroup } from '@/fields/linkGroup'
 
@@ -36,6 +30,10 @@ export const hero: Field = {
           label: 'Low Impact',
           value: 'lowImpact',
         },
+        {
+          label: 'Split Visual',
+          value: 'splitVisual',
+        },
       ],
       required: true,
     },
@@ -48,8 +46,6 @@ export const hero: Field = {
           return [
             ...rootFeatures,
             HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
             AlignFeature(),
           ]
         },
@@ -76,10 +72,18 @@ export const hero: Field = {
       name: 'media',
       type: 'upload',
       admin: {
-        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
+        condition: (_, { type } = {}) =>
+          ['highImpact', 'mediumImpact', 'splitVisual'].includes(type),
       },
       relationTo: 'media',
       required: true,
+    },
+    {
+      name: 'imageAnnotation',
+      type: 'richText',
+      admin: {
+        condition: (_, { type } = {}) => ['splitVisual'].includes(type),
+      },
     },
   ],
   label: false,
